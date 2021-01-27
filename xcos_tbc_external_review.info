@@ -1,0 +1,4 @@
+name = Xcos Tbc external review
+description = Module for the xcos tbc external review
+core = 7.x
+package = IITB
