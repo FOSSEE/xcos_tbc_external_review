@@ -881,7 +881,7 @@ ini_set('display_startup_errors', TRUE);
        /* fetching pre-existing caption entry if any */
         $query = "
             SELECT examples FROM xcos_external_review_captions
-            WHERE preference_id = {:preference_id}
+            WHERE preference_id = :preference_id
             ";
         $args = array(':preference_id' => $preference_id);
         $result = db_query($query, $args);        
@@ -892,7 +892,7 @@ ini_set('display_startup_errors', TRUE);
          /*fetching chapter and examples */
         $c_query = "
             SELECT * FROM xcos_textbook_companion_chapter
-            WHERE preference_id = {:preference_id}
+            WHERE preference_id = :preference_id
             ORDER BY number
         ";
         $c_result = db_query($c_query, array(':preference_id' => $preference_id));
@@ -954,10 +954,10 @@ ini_set('display_startup_errors', TRUE);
         /* inserting or updating based on row existence */
         $query = "
             SELECT id FROM xcos_external_review_captions
-            WHERE preference_id = {:preference_id} 
+            WHERE preference_id = :preference_id
             AND review = (
                 SELECT review FROM xcos_external_review_details
-                WHERE preference_id = {:preference_id}
+                WHERE preference_id = :preference_id
             )
         ";
         $args = array(':preference_id' => $preference_id );
@@ -979,11 +979,11 @@ ini_set('display_startup_errors', TRUE);
             /* updating the existing */
             $query = "
                 UPDATE xcos_external_review_captions
-                SET examples = '{:examples}'
-                WHERE preference_id = {:preference_id}
+                SET examples = ':examples'
+                WHERE preference_id = :preference_id
                 AND review = (
                     SELECT review FROM xcos_external_review_details
-                    WHERE preference_id = {:preference_id}
+                    WHERE preference_id = :preference_id
                 )
             ";
            $args = array(':examples'=> $examples,':preference_id' => $preference_id );
@@ -1563,7 +1563,7 @@ ini_set('display_startup_errors', TRUE);
                 
          $query = "
             SELECT * FROM xcos_external_review_details
-            WHERE preference_id = {:preference_id}
+            WHERE preference_id = :preference_id
         "; 
         $args = array(':preference_id' => $preference_id);       
         $result = db_query($query,$args);        
@@ -1721,7 +1721,7 @@ ini_set('display_startup_errors', TRUE);
            $query = "
                 SELECT * FROM xcos_external_review_details erd
                 LEFT JOIN xcos_textbook_companion_preference pre ON erd.preference_id = pre.id
-                WHERE preference_id = {:preference_id}
+                WHERE preference_id = :preference_id
             ";
             $args = array(':preference_id'=> $preference_id);
             $result = db_query($query,$args);
@@ -2279,7 +2279,7 @@ ini_set('display_startup_errors', TRUE);
             INSERT INTO {xcos_external_review_details}
             (uid, preference_id, review, status, completed, published, sent)
             VALUES
-            (:uid, {:preference_id},{:review}, :status, :completed, :published, :sent)
+            (:uid, :preference_id, :review, :status, :completed, :published, :sent)
         ";
         $args = array(':uid' => 0,
         	     ':preference_id' => $preference_id,
@@ -2753,7 +2753,7 @@ ini_set('display_startup_errors', TRUE);
                         $query = "
                             UPDATE xcos_external_review_details
                             SET failed_reminder = failed_reminder + 1
-                            WHERE preference_id = {:preference_id}
+                            WHERE preference_id = :preference_id
                         ";
                         
                         
