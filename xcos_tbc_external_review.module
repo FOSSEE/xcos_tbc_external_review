@@ -1131,6 +1131,7 @@ ini_set('display_startup_errors', TRUE);
                 t("No"),
                 t("NA")
             ),
+            '#required' => TRUE
         );
         $form["error"]["ncf"] = array(
             "#type" => "radios",
@@ -1140,6 +1141,7 @@ ini_set('display_startup_errors', TRUE);
                 t("No"),
                 t("NA")
             ),
+            '#required' => TRUE
             //'#states' => array('invisible' => array(':input[name="book"]' => array('value' => 0),),),  
         );
         $form["error"]["axl"] = array(
@@ -1150,6 +1152,7 @@ ini_set('display_startup_errors', TRUE);
                 t("No"),
                 t("NA")
             ),
+            '#required' => TRUE
             //'#states' => array('invisible' => array(':input[name="book"]' => array('value' => 0),),),  
         );
         $form["error"]["acn"] = array(
@@ -1160,6 +1163,7 @@ ini_set('display_startup_errors', TRUE);
                 t("No"),
                 t("NA")
             ),
+            '#required' => TRUE
           // '#states' => array('invisible' => array(':input[name="book"]' => array('value' => 0),),),  
         );
 
@@ -1171,6 +1175,7 @@ ini_set('display_startup_errors', TRUE);
                 t("No"),
                 t("NA")
             ),
+            '#required' => TRUE
            // '#states' => array('invisible' => array(':input[name="book"]' => array('value' => 0),),),  
         );
         $form["error"]["auu"] = array(
@@ -1181,6 +1186,7 @@ ini_set('display_startup_errors', TRUE);
                 t("No"),
                 t("NA")
             ),
+            '#required' => TRUE
           //'#states' => array('invisible' => array(':input[name="book"]' => array('value' => 0),),),  
         );
         $form["error"]["amt"] = array(
@@ -1191,6 +1197,7 @@ ini_set('display_startup_errors', TRUE);
                 t("No"),
                 t("NA")
             ),
+            '#required' => TRUE
          //'#states' => array('invisible' => array(':input[name="book"]' => array('value' => 0),),),     
         );
         $form["error"]["dmx"] = array(
@@ -1201,6 +1208,7 @@ ini_set('display_startup_errors', TRUE);
                 t("No"),
                 t("NA")
             ),
+            '#required' => TRUE
            //'#states' => array('invisible' => array(':input[name="book"]' => array('value' => 0),),),  
         );
         $form["error"]["dwe"] = array(
@@ -1211,6 +1219,7 @@ ini_set('display_startup_errors', TRUE);
                 t("No"),
                 t("NA")
             ),
+            '#required' => TRUE
            //'#states' => array('invisible' => array(':input[name="book"]' => array('value' => 0),),),  
         );
         /*$form["error"]["aci"] = array(
@@ -1241,11 +1250,13 @@ ini_set('display_startup_errors', TRUE);
                 t("Yes"),
                 t("No")
             ),
+            '#required' => TRUE
            //'#states' => array('invisible' => array(':input[name="book"]' => array('value' => 0),),),  
         );
         $form["error"]["comment"] = array(
             "#type" => "textarea",
             "#title" => t("Other commment? (if any)"),
+
            //'#states' => array('invisible' => array(':input[name="book"]' => array('value' => 0),),),     
         );
         $form["error"]["submit"] = array(
@@ -2116,7 +2127,7 @@ ini_set('display_startup_errors', TRUE);
             $result = $query->execute();
             $row = $result->fetchObject();
             $current_review = $row->review;
-            $review_dir = $_SERVER['DOCUMENT_ROOT'] . base_path() . "reviews/{$row->preference_id}/";
+            $review_dir = $_SERVER['DOCUMENT_ROOT'] . base_path() . "xcos_reviews/{$row->preference_id}/";
             if(!file_exists($review_dir)) {
                 mkdir($review_dir, 0755, TRUE);
             }
