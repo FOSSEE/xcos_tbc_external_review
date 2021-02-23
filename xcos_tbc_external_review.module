@@ -1,0 +1,3092 @@
+<?php 
+error_reporting(E_ALL);
+ini_set('display_errors', TRUE);
+ini_set('display_startup_errors', TRUE);
+    date_default_timezone_set('Asia/Calcutta');
+    function xcos_tbc_external_review_menu() {
+        $items = array();
+        
+        $items["xcos-tbc-external-review/books-available"] = array(
+            "title" => "Xcos ER Books Available",
+            "page callback" => "xcos_tbc_external_review_all",
+            "access arguments" => array("access xcos_tbc_external_review"),
+            "type" => MENU_CALLBACK
+        );
+        $items["xcos-tbc-external-review/profile"] = array(
+            "title" => "Xcos TBC External Reviewer Profile",
+            "page callback" => "xcos_tbc_external_review_profile_all",
+            "access arguments" => array("access xcos_tbc_external_review"),
+            "type" => MENU_CALLBACK
+        );
+        $items["xcos-tbc-external-review/view-reviewers"] = array(
+            "title" => "Xcos ER List Reviewers",
+            "page callback" => "xcos_tbc_external_review_view_reviewers_all",
+            "access arguments" => array("administer xcos_tbc_external_review"),
+            "type" =>  MENU_NORMAL_ITEM
+        );
+        $items["xcos-tbc-external-review/reviewer-selections"] = array(
+            "title" => "Xcos TBC External Reviewer Selections",
+            "page callback" => "xcos_tbc_external_review_reviewer_selections_all",
+            "access arguments" => array("administer xcos_tbc_external_review"),
+            "type" => MENU_CALLBACK
+        );
+        $items["xcos-tbc-external-review/selected-books"] = array(
+            "title" => "Xcos External Review Books",
+            "page callback" => "xcos_tbc_external_review_selected_books_all",
+            "access arguments" => array("download xcos_tbc_external_review"),
+            "type" => MENU_NORMAL_ITEM
+        );
+        $items["xcos-tbc-external-review/status"] = array(
+            "title" => "Xcos External Review Status",
+            "page callback" => "xcos_tbc_external_review_status_all",
+            "access arguments" => array("download xcos_tbc_external_review"),
+            "type" => MENU_NORMAL_ITEM
+        );
+        $items["xcos-tbc-external-review/comments"] = array(
+            "title" => "Xcos External Review Comments",
+            "page callback" => "xcos_tbc_external_review_comments_all",
+            "access arguments" => array("download xcos_tbc_external_review"),
+                "weight" => 30,
+            "type" => MENU_NORMAL_ITEM,
+        );
+        $items["xcos-tbc-external-review/comments/new"] = array(
+            "title" => "Xcos Review Comment",
+            "page callback" => "xcos_tbc_external_review_comments_all",
+            "access arguments" => array("download xcos_tbc_external_review"),
+            "weight" => 1,
+            "type" => MENU_DEFAULT_LOCAL_TASK,
+        );
+        $items["xcos-tbc-external-review/comments/view"] = array(
+            "title" => "Xcos View Comments",
+            "page callback" => "xcos_tbc_external_review_comments_view_all",
+            "access arguments" => array("download xcos_tbc_external_review"),
+            "weight" => 2,
+            "type" => MENU_LOCAL_TASK,
+        );
+        $items["xcos-tbc-external-review/comments/captions"] = array(
+            "title" => "Xcos Review Captions",
+            "page callback" => "xcos_tbc_external_review_comments_captions_all",
+            "access arguments" => array("download xcos_tbc_external_review"),
+            "weight" => 2,
+            "type" => MENU_LOCAL_TASK,
+        );
+        $items["xcos-tbc-external-review/manage-comments"] = array(
+            "title" => "Xcos ER Manage Comments",
+            "page callback" => "xcos_tbc_external_review_manage_comments_all",
+            "access arguments" => array("administer xcos_tbc_external_review"),
+            "type" => MENU_NORMAL_ITEM
+        );
+        
+        $items["xcos-tbc-external-review/mail-comments"] = array(
+            "title" => "Xcos ER Mail Comments",
+            "page callback" => "xcos_tbc_external_review_mail_comments_all",
+            "access arguments" => array("administer xcos_tbc_external_review"),
+            "type" => MENU_CALLBACK
+        );
+        $items["xcos-tbc-external-review/manage-status"] = array(
+            "title" => "Xcos ER View Status",
+            "page callback" => "xcos_tbc_external_review_manage_status_all",
+            "access arguments" => array("administer xcos_tbc_external_review"),
+            "weight" => 30,
+            "type" => MENU_NORMAL_ITEM
+        );
+        $items["xcos-tbc-external-review/manage-status/all"] = array(
+            "title" => "Xcos All",
+            "page callback" => "xcos_tbc_external_review_manage_status_all",
+            "access arguments" => array("administer xcos_tbc_external_review"),
+            "weight" => 1,
+            "type" => MENU_DEFAULT_LOCAL_TASK,
+        );
+        $items["xcos-tbc-external-review/manage-status/recent"] = array(
+            "title" => "Xcos Recently Completed",
+            "page callback" => "xcos_tbc_external_review_manage_status_recent_all",
+            "access arguments" => array("administer xcos_tbc_external_review"),
+            "weight" => 2,
+            "type" => MENU_LOCAL_TASK,
+        );
+        $items["xcos-tbc-external-review/add-book"] = array(
+            "title" => "Xcos ER Add Book",
+            "page callback" => "xcos_tbc_external_review_add_book_all",
+            "access arguments" => array("administer xcos_tbc_external_review"),
+            "type" =>  MENU_CALLBACK
+        );
+        $items["xcos-tbc-external-review/ajax"] = array(
+            "page callback" => "xcos_tbc_external_review_ajax",
+            "access callback" => TRUE,
+            "type" => MENU_CALLBACK
+        );
+        
+        $items["xcos-tbc-external-review/eligibility-test"] = array(
+            "title" => "Xcos Eligibility Test",
+            "page callback" => "xcos_tbc_external_review_eligibility_test_all",
+            "access arguments" => array("access xcos_tbc_external_review"),
+            "type" => MENU_NORMAL_ITEM,
+            "file" => "xcos_tbc_external_review_eligibility_test.inc"
+        );
+        $items["xcos-tbc-external-review/manage-tests"] = array(
+            "title" => "Manage Xcos  Eligibility Test",
+            "page callback" => "xcos_tbc_external_review_manage_tests_all",
+            "access arguments" => array("administer xcos_tbc_external_review"),
+            "type" => MENU_NORMAL_ITEM,
+            "file" => "xcos_tbc_external_review_eligibility_test.inc"
+        ); 
+        $items["xcos-tbc-external-review/er"] = array(
+            "title" => "Xcos ER Assign/ Remove Book",
+            "page callback" => "xcos_tbc_external_review_er_assign_book_all",
+            "access arguments" => array("access xcos_tbc_er_assign_add_remove_books"),
+            "type" => MENU_NORMAL_ITEM
+        );          
+        $items["xcos-tbc-external-review/er/assign-book"] = array(
+            "title" => "Xcos ER Assign Book",
+            "page callback" => "xcos_tbc_external_review_er_assign_book_all",
+            "access arguments" => array("access xcos_tbc_er_assign_add_remove_books"),
+            "type" => MENU_DEFAULT_LOCAL_TASK
+        );     
+        $items["xcos-tbc-external-review/er/remove-book"] = array(
+            "title" => "Xcos ER Remove Book",
+            "page callback" => "xcos_tbc_external_review_er_remove_book_all",
+            "access arguments" => array("access xcos_tbc_er_assign_add_remove_books"),
+            "type" => MENU_LOCAL_TASK
+        ); 
+       /* $items["xcos_tbc_external_review/mail"] = array(
+            "title" => "Mail Email To Reviewer",
+            "page callback" => "xcos_tbc_external_review_mail_all",
+            "access arguments" => array("download xcos_tbc_external_review"),
+            "type" => MENU_DEFAULT_LOCAL_TASK 
+        );
+        $items["xcos_tbc_external_review/reminder/reviewer_reminder"] = array(
+            "title" => "Reviewer reminder",
+            "description" => "Failed to complete review",
+            "page callback" => "_xcos_er_reminder_all",   
+            "access arguments" =>array("xcos_tbc_external_review_reminder_mail"),
+            "type" => MENU_LOCAL_TASK
+        );
+        $items["xcos_tbc_external_review/reminder/xcos_tbc_reviewer_reminder"] = array(
+            "title" => "TBC Reviewer Reminder",
+            "description" => "Failed to review",
+            "page callback" => "_er_xcos_tbc_reviewer_reminder_all",   
+            "access arguments" =>array("xcos_tbc_external_review_reminder_mail"),
+            "type" => MENU_LOCAL_TASK
+        );
+       /* $items["xcos_tbc_external_review/reminder_all"] = array(
+            "title" => "TBC/ ER Reviewer Reminders",
+            "description" => "Failed to complete review",
+            "page callback" => "_xcos_er_reminder_page_all",   
+            "access arguments" =>array("download xcos_tbc_external_review"),
+            "type" => MENU_NORMAL_ITEM
+        );
+        $items["xcos_tbc_external_review/reminder_all/reviewer_reminder_all"] = array(
+            "title" => "Reviewer reminder",
+            "description" => "Failed to complete review",
+            "page callback" => "_xcos_er_reminder_page_all",   
+            "access arguments" =>array("download xcos_tbc_external_review"),
+            "type" => MENU_DEFAULT_LOCAL_TASK
+        );
+        $items["xcos_tbc_external_review/reminder_all/xcos_tbc_reviewer_all_reminder"] = array(
+            "title" => "TBC Reviewer Reminder",
+            "description" => "Failed to review",
+            "page callback" => "_xcos_tbc_reviewer_reminder_page_all",   
+            "access arguments" =>array("download xcos_tbc_external_review"),
+            "type" => MENU_LOCAL_TASK
+        );*/
+          /* ADMIN SETTINGS */
+          $items['admin/settings/xcos-tbc-external-review'] = array(
+            'title' => 'Xcos TBC external review module mail Settings',
+            'description' => 'Xcos TBC external review module mail Settings',
+            'page callback' => 'drupal_get_form',
+            'page arguments' => array('xcos_tbc_external_review_settings_form'),
+            'access arguments' => array('access xcos_tbc_administrator_mail_settings'),
+            'type' => MENU_NORMAL_ITEM,
+            'file' => 'xcos_tbc_external_review_settings.inc',
+          );
+        return $items;
+    }
+    function xcos_tbc_external_review_permission(){
+        return array(
+             'access xcos_tbc_external_review' => array(
+             'title' => t('access For tbc external review '),
+             'restrict access' => TRUE,
+             ),
+             'administer xcos_tbc_external_review' => array(
+             'title' => t('administer tbc external review'),
+             'restrict access' => TRUE,
+             ),
+             'xcos_tbc_external_review_reminder_mail' => array(
+             'title' => t('tbc external review reminder mail'),
+             'restrict access' => TRUE,
+             ),
+             'download xcos_tbc_external_review' => array(
+             'title' => t('download tbc external review'),
+             'restrict access' => TRUE,
+             ),
+             'access xcos_tbc_er_assign_add_remove_books' => array(
+             'title' => t('access tbc er assign add remove books'),
+             'restrict access' => TRUE,
+             ),
+             'access xcos_tbc_administrator_mail_settings' => array(
+             'title' => t('access tbc administrator mail settings'),
+             'restrict access' => TRUE,
+             ),
+             
+        );
+        
+    
+    }
+
+   /*  function xcos_tbc_external_review_perm() {
+        return array(
+            "access xcos_tbc_external_review", "administer xcos_tbc_external_review", "xcos_tbc_external_review_reminder_mail",
+            "download xcos_tbc_external_review", "access xcos_tbc_er_assign_add_remove_books"
+        );
+    }
+
+   
+        book selection form
+        {xcos_external_review_details} database required.
+        fields: preference_id, uid, status
+        status = 1 for selected.
+    */
+    function xcos_tbc_external_review_form($form, &$form_state) {
+        global $user;
+        $form = array();
+        
+        /* create multiple checkboxes from database */
+        $result = xcos_remaining_books();
+        $num_rows = $result->rowCount();
+        if($num_rows > 0) {
+            while($row = $result->fetchObject()) {
+                $form[$row->id] = array(
+                    "#type" => "checkbox",
+                    "#title" => t("{$row->book} by {$row->author} ( ed: {$row->edition}, pub: {$row->year})"),
+                );
+            }
+            $form["submit"] = array(
+                "#type" => "submit",
+                "#value" => "Submit",
+            );
+        } else {
+            drupal_set_message("<strong>All the available books have been selected. Please wait for more updates.</strong>", "status");
+        }
+        return $form;
+    }
+
+    function xcos_tbc_external_review_form_validate($form, &$form_state) {
+        $result = xcos_remaining_books();
+        $count = 0;
+        $selections = array();
+        while($row = ($result->fetchObject)) {
+            if($form_state["values"][$row->id] == 1) {
+                $count++;
+                array_push($selections, $row->id);
+            }
+        }
+        $remaining = xcos_remaining_books_count();
+        if($count > $remaining) {
+            form_set_error("", "You can select a maximum of <strong>{$remaining}</strong> books.");
+        } else {
+            $form_state["values"]["selections"] = $selections;
+        }
+    }
+    
+    function xcos_tbc_external_review_form_submit($form, &$form_state) {
+        global $user;
+        
+        $selections = $form_state["values"]["selections"];
+        foreach($selections as $selection) {
+           /*$query = "update {xcos_external_review_details} set uid = {$user->uid}, status = 1, review = 1  where preference_id = {$selection}";
+            db_query($query);*/
+            $query = db_update('xcos_external_review_details');
+            $query->fields(array(
+              'uid' => $user->uid,
+              'status' => 1,
+              'review' => 1,
+            ));
+            $query->condition('preference_id', $selection);
+            $num_updated = $query->execute();
+        }
+        drupal_set_message("<strong>Your selections have been updated sucessfully.</strong>", "status");
+    }
+
+    function xcos_tbc_external_review_all() {
+        global $user;
+        $page_content = "";
+        
+        $remaining = xcos_remaining_books_count();
+        if($remaining > 0) {
+            $page_content = "You have <strong>{$remaining}</strong> selections remaining:";
+            $xcos_tbc_external_review_form = drupal_get_form("xcos_tbc_external_review_form");
+            $page_content .= drupal_render($xcos_tbc_external_review_form);
+        } else {
+            $page_content = "Thanks for your selections.";
+        }
+        return $page_content;
+    }
+
+    /* helper functions */
+    function xcos_remaining_books_count() {
+        global $user;
+        /*finding how many books the user can select */
+       // $query = "select count(*) from {xcos_external_review_details} where uid = {$user->uid}";
+       // $result = db_query($query);
+        $query = db_select('xcos_external_review_details');
+        $query->addExpression('count(*)');
+        $query->condition('uid', $user->uid);
+        $result = $query->execute();
+        //$row = db_fetch_array($result);        
+        //$remaining = 6 - $row["count(*)"];
+        $row = $result->fetchAssoc();
+        $remaining = 6 - $row["count(*)"];
+        
+       /* while ($row = $result->fetchAssoc()) {
+        $remaining = 6 - $row["count(*)"];
+
+        }*/
+        return $remaining;
+    }
+
+    function xcos_remaining_books() {
+        $query = "select * from {xcos_textbook_companion_preference} where id in (select preference_id from {xcos_external_review_details} where status = 0)";        
+        $result = db_query($query);
+        return $result;
+    }
+
+    function xcos_suffix($number) {
+        /* 
+            considering number will be not more than 10 
+            eg: 11th, 21st - Not required
+        */
+        $output = ""; 
+        switch ($number) { 
+            case "1": 
+                $output = $number. "st"; 
+                break; 
+            case "2": 
+                $output = $number. "nd"; 
+                break; 
+            case "3":
+                $output = $number. "rd"; 
+                break;
+            default:
+                $output = $number. "th"; 
+                break;
+        }
+        return $output;
+    }
+
+    function xcos_send_mail_attachment($from, $to, $cc, $bcc, $subject, $message1, $file) {
+        // $file should include path and filename
+
+	$body = $message1;
+        $filename = basename($file);
+        $from = str_replace(array("\r", "\n"), '', $from); // to prevent email injection
+        $file_size = filesize($file);
+        $handle = fopen($file, "r");
+        $content = fread($handle, $file_size);
+        fclose($handle);
+        $content = chunk_split(base64_encode($content));
+        $uid = md5(uniqid(time()));
+        $filename = basename($file);
+    $eol = PHP_EOL;
+       // Basic headers
+        $header = "From: ".$from." <".$from.">".$eol;
+        $header .= "Reply-To: ".$from.$eol;
+    $header .= "Cc:". $cc.$eol;
+    $header .= "Bcc:". $bcc.$eol;
+        $header .= "MIME-Version: 1.0\r\n";
+        $header .= "Content-Type: multipart/mixed; boundary=\"".$uid."\"";
+       // Put everything else in $message
+        $message = "--".$uid.$eol;
+        $message .= "Content-Type: text/html; charset=ISO-8859-1".$eol;
+        $message .= "Content-Transfer-Encoding: 8bit".$eol.$eol;
+        $message .= $body.$eol;
+        $message .= "--".$uid.$eol;
+        $message .= "Content-Type: application/pdf; name=\"".$filename."\"".$eol;
+        $message .= "Content-Transfer-Encoding: base64".$eol;
+        $message .= "Content-Disposition: attachment; filename=\"".$filename."\"".$eol;
+        $message .= $content.$eol;
+        $message .= "--".$uid."--";
+
+        return mail($to, $subject, $message, $header);
+    }
+    /*    external reviewer profile form,
+        save the data in {xcos_external_review_profile}
+    */
+    function xcos_tbc_external_review_profile_form($form, &$form_state) {
+        global $user;
+        $form = array();
+        /* populating the form with previous entry details if exists */
+        /*$query = "
+            SELECT * FROM {xcos_external_review_profile} 
+            WHERE uid = %d
+        ";
+        $result = db_query($query, $user->uid);*/
+        //$row = db_fetch_array($result);
+        $query = db_select('xcos_external_review_profile');
+        $query->fields('xcos_external_review_profile');
+        $query->condition('uid', $user->uid);
+        $result = $query->execute();
+        $row =  $result->external_review_profile;
+        
+        $form["first_name"] = array(
+            "#type" => "textfield",
+            "#title" => t("First Name"),
+            "#required" => True,
+            "#default_value" => $row["first_name"],
+        );
+        $form["last_name"] = array(
+            "#type" => "textfield",
+            "#title" => t("Last Name"),
+            "#required" => True,
+            "#default_value" => $row["last_name"],
+        );
+        $form["designation"] = array(
+            "#type" => "textfield",
+            "#title" => t("Designation"),
+            "#required" => True,
+            "#default_value" => $row["designation"],
+        );
+        $form["university"] = array(
+            "#type" => "textfield",
+            "#title" => t("University/Institute"),
+            "#required" => True,
+            "#default_value" => $row["university"],
+        );
+        $form["phone"] = array(
+            "#type" => "textfield",
+            "#title" => t("Phone Number"),
+            "#required" => True,
+            "#default_value" => $row["phone"],
+        );
+        $form["email"] = array(
+            "#type" => "textfield",
+            "#title" => t("Email"),
+            "#required" => True,
+            "#default_value" => $row["email"],
+        );
+        $form["alt_email"] = array(
+            "#type" => "textfield",
+            "#title" => t("Alternate Email"),
+            "#default_value" => $row["alt_email"],
+        );
+        $form["address"] = array(
+            "#type" => "textarea",
+            "#title" => t("Postal Address"),
+            "#required" => True,
+            "#default_value" => $row["address"],
+        );
+        $form["description"] = array(
+            "#type" => "textarea",
+            "#title" => t("Description: 
+                (Research interest / Level of expertise in Scilab / Teaching Expertise )
+            "),
+            "#required" => True,
+            "#default_value" => $row["description"],
+        );
+        $form["submit"] =array(
+            "#type" => "submit",
+            "#value" => "Update Profile",
+        );
+        return $form;
+    }
+
+    function xcos_tbc_external_review_profile_form_validate($form, &$form_state) {
+        /* validating phone */
+        if(!preg_match("/^[0-9]+$/", $form_state["values"]["phone"])) {
+            form_set_error("phone", "Please enter a valid Phone Number, only (0-9) allowed.");
+        }
+        /*validating email */
+        if(!valid_email_address($form_state["values"]["email"])) {
+            form_set_error("email", "Please enter a valid Email address");
+        }
+        if($form_state["values"]["alt_email"] && !valid_email_address($form_state["values"]["alt_email"])) {
+            form_set_error("alt_email", "Please enter a valid Alternate Email address" );
+        }
+        /* validating address */
+        if(strlen($form_state["values"]["address"]) < 20) {
+            form_set_error("address", "Please enter a proper Postal Address.");
+        }
+        /* validating description */
+        if(strlen($form_state["values"]["description"]) < 25) {
+            form_set_error("description", "Please enter a longer description.");
+        }
+    }
+
+    function xcos_tbc_external_review_profile_form_submit($form, &$form_state) {
+        global $user;
+        /* setting $val as the new values array */
+        $val = array(); 
+        $val = $form_state["values"];
+        
+        /* checking whether the user already has an entry */
+        /*$query = "select uid from {xcos_external_review_profile} where uid = %d";
+        $result = db_query($query, $user->uid);*/
+        $query = db_select('xcos_external_review_profile');
+        $query->fields('xcos_external_review_profile', array('uid'));
+        $query->condition('uid', $user->uid);
+        $result = $query->execute();
+        $has_entry = $result->rowCount();
+        
+        if($has_entry) {
+            /* update the existing entry */
+            /*$query = "update {xcos_external_review_profile} 
+                    set 
+                    first_name = '%s', last_name = '%s', designation = '%s', 
+                    university = '%s', phone = '%s', email = '%s', alt_email = '%s',
+                    address = '%s', description = '%s' 
+                    where uid = %d
+            ";
+            $result = db_query(
+                $query, $val["first_name"], $val["last_name"], $val["designation"], $val["university"],
+                $val["phone"], $val["email"], $val["alt_email"], $val["address"], $val["description"],
+                $user->uid
+            );*/
+            $query = db_update('xcos_external_review_profile');
+            $query->fields(array(
+              'first_name' => $val["first_name"],
+              'last_name' => $val["last_name"],
+              'designation' => $val["designation"],
+              'university' => $val["university"],
+              'phone' => $val["phone"],
+              'email' => $val["email"],
+              'alt_email' => $val["alt_email"],
+              'address' => $val["address"],
+              'description' => $val["description"],
+              'active' => 0,
+            ));
+            $query->condition('uid', $user->uid);
+            $result = $query->execute();
+        } else {
+            /* create a new entry */
+           /* $query = "insert into {xcos_external_review_profile} 
+                    (uid, first_name, last_name, designation, university, phone, email, alt_email, address, description) 
+                    values
+                    (%d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')
+            ";
+            $result = db_query(
+                $query, $user->uid, $val["first_name"], $val["last_name"], $val["designation"], $val["university"],
+                $val["phone"], $val["email"], $val["alt_email"], $val["address"], $val["description"]
+            );*/
+            $query = "insert into {xcos_external_review_profile} 
+                    (uid, first_name, last_name, designation, university, phone, email, alt_email, address, description, active) 
+                    values
+                    (:uid, :first_name, :last_name, :designation, :university, :phone, :email, :alt_email, :address, :description, :active) 
+            ";
+            $args = array(
+                           ':uid' => $user->uid,
+                           ':first_name' => $val["first_name"],
+                           ':last_name' => $val["last_name"],
+                           ':designation' => $val["designation"],
+                           ':university' => $val["university"],
+                           ':phone' => $val["phone"],
+                           ':email' => $val["email"],
+                           ':alt_email' => $val["alt_email"],
+                           ':address' => $val["address"],
+                           ':description' => $val["description"],
+                           ':active' => 0,
+            );
+             $result = db_query($query, $args);
+        }
+        if($result) {
+            drupal_set_message("Profile updated successfully. Thank you.", "status");
+        } else {
+            drupal_set_message("Database updation failed. Please contact support.", "error");
+        }
+        // drupal_goto('xcos_tbc_external_review');
+        drupal_goto('xcos-tbc-external-review/eligibility-test');
+    }
+
+    function xcos_tbc_external_review_profile_all() {
+        $page_content = "";
+        $xcos_tbc_external_review_profile_form = drupal_get_form("xcos_tbc_external_review_profile_form");
+        $page_content .= drupal_render($xcos_tbc_external_review_profile_form);
+        
+        return $page_content;
+    }
+
+    function xcos_tbc_external_review_view_reviewers_all() {
+        $page_content = "";
+        /*$query = "
+            SELECT * FROM {xcos_external_review_profile}
+            WHERE active = 1
+        ";
+        $result = db_query($query);*/
+        $query = db_select('xcos_external_review_profile');
+        $query->fields('xcos_external_review_profile');
+        $query->condition('active', 1);
+        $result = $query->execute();
+        
+        $page_content .= "<ul>";
+        while($row = $result->fetchObject()) {
+            $page_content .= "<li>";
+            $page_content .= l("{$row->first_name} {$row->last_name}", "xcos-tbc-external-review/reviewer-selections/{$row->uid}");
+            $page_content .= "</li>";
+        }
+        $page_content .= "</ul>";
+        return $page_content;
+    }
+
+    function xcos_tbc_external_review_reviewer_selections_all($uid=0) {
+        $page_content = "";
+        
+       /* $query = "SELECT * FROM {xcos_external_review_profile} WHERE uid = %d";
+        $result = db_query($query, $uid);*/
+        $query = db_select('xcos_external_review_profile');
+        $query->fields('xcos_external_review_profile');
+        $query->condition('uid', $uid);
+        $result = $query->execute();
+        $row = $result->fetchObject();
+        $page_content .= "Books selected by <strong>{$row->first_name} {$row->last_name}</strong>";
+        $query = "
+            SELECT * FROM {xcos_textbook_companion_preference} WHERE id IN 
+            (SELECT preference_id FROM {xcos_external_review_details} WHERE uid = :uid)
+        ";
+        $result = db_query($query, array(':uid' =>$uid));
+        
+
+        
+        $page_content .= "<ol>";
+        while($row =$result->fetchObject()) {
+            $page_content .= "<li>";
+            $page_content .= t("{$row->book} by {$row->author} ( ed: {$row->edition}, pub: {$row->year})");
+            $page_content .= "</li>";
+        }
+        $page_content .= "</ol>";
+        return $page_content;
+    }
+
+    function xcos_tbc_external_review_selected_books_all() {
+        global $user;
+        $page_content = "";
+        $query = "
+            SELECT * FROM {xcos_textbook_companion_preference} WHERE id IN 
+            (SELECT preference_id FROM {xcos_external_review_details} WHERE uid = :uid)
+        ";
+        $result = db_query($query, array(':uid' => $user->uid));
+       
+        
+        $headers = array(
+            "Book", "Author",
+            "Edition", "Action",
+        );
+        $rows = array();
+        while($row = $result->fetchObject()) {
+            $item = array(
+                "{$row->book}",
+                "{$row->author}",
+                "{$row->edition}",
+                l(t("Download [.zip]"), "xcos-textbook-companion/full-download-external/book/{$row->id}")
+            );
+            array_push($rows, $item);
+        }
+       // $page_content .= theme("table", $headers, $rows);
+        $page_content .= theme('table', array('header' => $headers, 'rows' => $rows ));
+        return $page_content;
+    }
+    
+    function xcos_tbc_external_review_comments_all() {
+        global $user;
+        $page_content = "";
+        $page_content .= "* Use this form to notify only examples that have errors.";
+        $xcos_tbc_external_review_comment_form = drupal_get_form("xcos_tbc_external_review_comment_form");
+        $page_content .= drupal_render($xcos_tbc_external_review_comment_form);
+        return $page_content;
+    }
+
+    function xcos_tbc_external_review_comments_view_all($preference_id = 0, $review = 0) {
+  //  var_dump('okee');
+  //  die;
+          
+        global $user;
+        $page_content = "";
+        $page_content .= "<br>";
+        
+        /* creating review links */
+        $query = "
+            SELECT DISTINCT(review) FROM xcos_external_review_comments
+            WHERE preference_id = :preference_id
+            ORDER BY review DESC "; 
+            $result = db_query($query, array(':preference_id' => $preference_id));
+                        
+            $tmp = $review; // for active class in case of 0
+       while($row = $result->fetchObject()) {
+            $option["attributes"]["class"] = "review-links";
+            if($review == $row->review) {
+                if(!is_array($option['attributes']['class'])){
+                     $option['attributes']['class'] = (array)$option['attributes']['class'];
+                }
+                     $option['attributes']['class'][] .= " active";
+            } else if($tmp == 0) {
+                 if(!is_array($option['attributes']['class'])){
+                     $option['attributes']['class'] = (array)$option['attributes']['class'];
+                 }
+                     $option['attributes']['class'][] .= " active";
+                     $tmp = -1;
+             }
+            $page_content .= l(
+                xcos_suffix($row->review) . "review", 
+                "xcos-tbc-external-review/comments/view/{$preference_id}/{$row->review}",
+                $option
+            );
+        }
+        $page_content .= "<br><br><hr>";
+        if($preference_id) {
+            if($review) {
+               $query = "
+                    SELECT erc.*, cha.number AS chapter, exa.number AS example FROM xcos_external_review_comments erc
+                    LEFT JOIN xcos_textbook_companion_chapter cha ON cha.id = erc.chapter_id 
+                    LEFT JOIN xcos_textbook_companion_example exa ON exa.id = erc.example_id
+                    WHERE erc.preference_id = :preference_id AND erc.review =:review
+                    ORDER BY erc.time DESC
+                    
+                ";
+             
+             /* $query = "
+		    SELECT erc.*, cha.number AS chapter, exa.number AS example FROM xcos_external_review_comments erc
+                    LEFT JOIN xcos_textbook_companion_chapter cha ON erc.chapter_id = cha.id 
+                    LEFT JOIN xcos_textbook_companion_example exa ON cha.id = exa.chapter_id
+                    WHERE erc.preference_id = :preference_id AND erc.review =:review 
+		    ORDER BY erc.time DESC 
+			";*/
+	      /* $query =" 
+   			SELECT erc.*, cha.number AS chapter, exa.number AS example FROM xcos_external_review_comments erc
+                    LEFT JOIN xcos_textbook_companion_chapter cha ON erc.chapter_id = cha.id 
+                    LEFT JOIN xcos_textbook_companion_example exa ON cha.id = exa.chapter_id AND exa.id = erc.example_id
+                    WHERE erc.preference_id = :preference_id AND erc.review = :review
+                    ORDER BY erc.time DESC
+			";  */
+          /*   
+		
+		$query = db_select('xcos_external_review_comments', 'erc');
+		$query->fields('erc', array('*'));
+		$query->fields('chapter', array('cha.number'));
+		$query->fields('example', array('exa.number'));
+		$query->leftJoin('xcos_textbook_companion_chapter', 'cha', 'cha.id = erc.chapter_id');
+		$query->leftJoin('xcos_textbook_companion_example', 'exa', 'exa.id = erc.example_id');
+		$query->condition('erc.preference_id', $preference_id);
+		$query->condition('erc.review', $review);
+		$query->orderBy('erc.time', 'DESC');
+		$result = $query->execute(); 
+	*/	
+                $result = db_query($query,array(':preference_id' => $preference_id, ':review'=> $review));
+             // var_dump("me call ho raha hu..");die; 
+            } else {
+            
+               $query = "
+                
+                    SELECT erc.*, cha.number AS chapter, exa.number AS example FROM xcos_external_review_comments erc
+                    LEFT JOIN xcos_textbook_companion_chapter cha ON cha.id = erc.chapter_id 
+                    LEFT JOIN xcos_textbook_companion_example exa ON exa.id = erc.example_id
+                    WHERE erc.preference_id = :pref_id AND review = (
+                        SELECT MAX(review) FROM xcos_external_review_comments WHERE preference_id = :preference_id
+                    )
+                    ORDER BY erc.time DESC
+                    
+                ";/*
+		$query = "   SELECT erc.*, cha.number AS chapter, exa.number AS example FROM xcos_external_review_comments erc
+                    LEFT JOIN xcos_textbook_companion_chapter cha ON erc.chapter_id = cha.id 
+                    LEFT JOIN xcos_textbook_companion_example exa ON cha.id = exa.chapter_id
+                    WHERE erc.preference_id = :pref_id AND review = (
+                        SELECT MAX(review) FROM xcos_external_review_comments WHERE preference_id = :preference_id
+                    )
+                    ORDER BY erc.time DESC
+
+
+			";*/
+                
+               $result = db_query($query, array(':pref_id' =>$preference_id, ':preference_id' => $preference_id));
+             // var_dump("nahi me call ho raha hu..");die; 
+            }
+            
+            $headers = array(
+                "Chapter", "Example",
+                "Time", "Action"
+            );
+            
+            $rows = array();
+            while($row = $result->fetchObject()) {
+              /*  $options = array(
+                    /* # linking in drupal l() */
+                 /*   "fragment" => " ",
+                    "external" => TRUE,
+                    "attributes" => array(
+                        "class" => "view-comment",
+                        "data-comment" => "{$row->id}",
+                    )
+                );*/
+                
+                $item = array(
+                    "{$row->chapter}",
+                    "{$row->example}",
+                    "{$row->time}",
+                   //l("View", "", $options),
+                     l("View", "", array(  "fragment" => " ",
+                        "external" => TRUE,"attributes" => array(                      
+                        "id" => "xcos-popup_window",
+                        "data-comment" => "{$row->id}",
+                    ))),
+                );
+                array_push($rows, $item);
+            }
+           // $page_content .= theme("table", $headers, $rows);
+            $page_content .= theme('table', array('header' => $headers, 'rows' => $rows ));
+           
+            //$page_content .= "<div id='lightbox-form' style='display:none'>";
+            //$page_content .= "<div id='lightbox-inner'></div></div> ";
+            $page_content .= "<div id='example-xcos-popup' class='xcos-popup'>
+                                    <div class='xcos-popup-body'>
+                                        <span class='xcos-popup-exit'></span>
+                                            <div id = 'xcos-popup-content' class='xcos-popup-content'>
+                                            </div>
+                                    </div>
+                            </div>";
+            $page_content .= "<div class='xcos-popup-overlay'></div>";
+            
+            
+        } else {
+           $query = "
+                SELECT * FROM xcos_textbook_companion_preference
+                WHERE id IN (
+                    SELECT preference_id FROM xcos_external_review_details 
+                    WHERE uid = :uid
+                )
+            ";
+            $result = db_query($query, array(':uid' => $user->uid));
+            
+            $headers = array(
+                "Book", "Author",
+                "Action"
+            );
+            $rows = array();
+            
+            while($row = $result->fetchObject()) {
+                $item = array(
+                    "{$row->book}",
+                    "{$row->author}",
+                    l("View", "xcos-tbc-external-review/comments/view/" . $row->id),
+                );
+                array_push($rows, $item);
+            }
+            //$page_content = theme("table", $headers, $rows);
+            $page_content .= theme('table', array('header' => $headers, 'rows' => $rows ));
+        }
+        return $page_content;
+    }
+
+    function xcos_tbc_external_review_comments_captions_form($form,&$form_state, $preference_id) {
+        $form = array();
+       
+       /* fetching pre-existing caption entry if any */
+        $query = "
+            SELECT examples FROM xcos_external_review_captions
+            WHERE preference_id = :preference_id
+            ";
+        $args = array(':preference_id' => $preference_id);
+        $result = db_query($query, $args);        
+        $row = $result->fetchObject();
+        $examples = $row->examples;
+        $examples = explode(",", $examples);
+        
+         /*fetching chapter and examples */
+        $c_query = "
+            SELECT * FROM xcos_textbook_companion_chapter
+            WHERE preference_id = :preference_id
+            ORDER BY number
+        ";
+        $c_result = db_query($c_query, array(':preference_id' => $preference_id));
+       /*
+        $query = db_select('xcos_textbook_companion_chapter');
+        $query->fields('xcos_textbook_companion_chapter');
+        $query->condition('preference_id', $preference_id);
+        $query->orderBy('number', 'ASC');
+        $c_result = $query->execute(); */
+        while($c_row = $c_result->fetchObject()) {
+            $form[$c_row->id] = array(
+                "#type" => "fieldset",
+                "#title" => "Chapter {$c_row->number} ({$c_row->name})"
+            );
+           /* $e_query = "
+                SELECT * FROM xcos_textbook_companion_example
+                WHERE chapter_id = {$c_row->id}
+                ORDER BY number
+            ";
+            
+            $e_result = db_query($e_query);
+            */
+            $query = db_select('xcos_textbook_companion_example');
+            $query->fields('xcos_textbook_companion_example');
+            $query->condition('chapter_id', $c_row->id);
+            $query->orderBy('number', 'ASC');
+            $e_result = $query->execute();
+            while($e_row = $e_result->fetchObject()) {
+                $form[$c_row->id][$e_row->id] = array(
+                    "#type" => "checkbox",
+                    "#title" => $e_row->caption,
+                );
+                if(in_array($e_row->id, $examples)) {
+                    $form[$c_row->id][$e_row->id]["#default_value"] = 1;
+                }
+            }
+        }
+        $form["preference_id"] = array(
+            "#type" => "hidden",
+            "#value" => $preference_id
+        );
+        $form["submit"] = array(
+            "#type" => "submit",
+            "#value" => "Submit"
+        );
+        return $form;
+    }
+
+    function xcos_tbc_external_review_comments_captions_form_submit($form, &$form_state) {
+        $values = $form_state["values"];
+        $preference_id = $values["preference_id"];
+        $examples = array();
+        foreach($values as $key => $value) {
+            if(is_numeric($key) && $value) {
+                array_push($examples, $key);
+            }
+        }
+        $examples = implode(",", $examples);
+        /* inserting or updating based on row existence */
+        $query = "
+            SELECT id FROM xcos_external_review_captions
+            WHERE preference_id = :preference_id
+            AND review = (
+                SELECT review FROM xcos_external_review_details
+                WHERE preference_id = :preference_id
+            )
+        ";
+        $args = array(':preference_id' => $preference_id );
+        $result = db_query($query, $args);
+       /*
+        $query = db_select('xcos_external_review_captions');
+        $query->fields('id');
+        $query->condition('preference_id', $preference_id);
+
+        $subquery = db_select('xcos_external_review_details');
+        $subquery->fields('review');
+        $subquery->condition('preference_id', $preference_id);
+        $query->condition('review', $subquery);
+
+        $result = $query->execute();*/
+
+        $num_rows = $result->rowCount();
+        if($num_rows) {
+            /* updating the existing */
+            $query = "
+                UPDATE xcos_external_review_captions
+                SET examples = ':examples'
+                WHERE preference_id = :preference_id
+                AND review = (
+                    SELECT review FROM xcos_external_review_details
+                    WHERE preference_id = :preference_id
+                )
+            ";
+           $args = array(':examples'=> $examples,':preference_id' => $preference_id );
+           $result = db_query($query, $args);
+            
+            
+            if($result) {
+                drupal_set_message("Caption error list updated successfully", "status");
+            } else {
+                drupal_set_message("Caption error list updation failed.", "error");
+            }
+        } else {
+            /* creating a new entry 
+            $query = "
+                INSERT INTO xcos_external_review_captions
+                (preference_id, examples, review)
+                VALUES
+                (
+                    {$preference_id}, '{$examples}', (
+                        SELECT review FROM xcos_external_review_details
+                        WHERE preference_id = {$preference_id}
+                    )
+                )
+            ";
+            $result = db_query($query);*/
+            $query = "
+                INSERT INTO xcos_external_review_captions
+                (preference_id, examples, review)
+                VALUES
+                (
+                    :preference_id, :examples, (
+                        SELECT review FROM xcos_external_review_details
+                        WHERE preference_id = :preference_id
+                    )
+                )
+            ";
+            $args = array(
+                    ':preference_id' => $preference_id,
+                    ':examples' => $examples, 
+                    );
+            
+            $result = db_query($query, $args);
+            
+            
+            if($result) {
+                drupal_set_message("Caption error list updated successfully.", "status");
+            } else {
+                drupal_set_message("Caption error list updation failed.", "error");
+            }
+        }
+    }
+
+    function xcos_tbc_external_review_comments_captions_all($preference_id=0) {
+        global $user;
+        $page_content = "";
+        if($preference_id) {
+            $page_content .= "<p>* Check mark all the <strong>captions that do not make sense</strong>.</p>";
+            $xcos_tbc_external_review_comments_captions_form = drupal_get_form("xcos_tbc_external_review_comments_captions_form", $preference_id);
+            $page_content .= drupal_render($xcos_tbc_external_review_comments_captions_form);
+        }
+        else {
+            $query = "
+                SELECT * FROM {xcos_textbook_companion_preference} WHERE id IN 
+                (SELECT preference_id FROM {xcos_external_review_details} WHERE uid =:uid)
+                ";
+            $result = db_query($query, array(':uid' => $user->uid));
+                        
+            $headers = array(
+                "Book", "Edition",
+                "Action",
+            );
+            $rows = array();
+            while($row = $result->fetchObject()) {
+                $item = array(
+                    "{$row->book}<br>{$row->author}",
+                    "{$row->edition}",
+                    l(t("Review Captions"), "xcos-tbc-external-review/comments/captions/{$row->id}"),
+                );
+                array_push($rows, $item);
+            }
+            //$page_content .= theme("table", $headers, $rows);
+            $page_content .= theme('table', array('header' => $headers, 'rows' => $rows ));
+        }
+        return $page_content;
+    }
+
+    function xcos_tbc_external_review_comment_form($form,&$form_state) {
+   
+    $options_first = _ajax_xcos_tbc_review_get_books_list($user->uid);
+    $selected = isset($form_state['values']['book']) ? $form_state['values']['book'] : key($options_first);
+        $form = array();
+        global $user;
+        global $base_url;
+     
+        $form["book"] = array(
+            "#type" => "select",
+            "#title" => t("Please select the book."),
+            "#options" => _ajax_xcos_tbc_review_get_books_list($user->uid),           
+            "#default_value" => $selected,
+            '#ajax' => array(
+		          'callback' => 'ajax_xcos_tbc_review_chapter_list_callback',
+		      ),
+		     '#validated' => TRUE,
+		    
+        );
+        $form["chapter"] = array(
+            "#type" => "select",           
+            "#title" => t("Please select the chapter"),
+            '#prefix' => '<div id="ajax_xcos_tbc_review_select_chapter_lists">',
+				'#suffix' => '</div>',
+				'#validated' => TRUE,
+				'#ajax' => array(
+		          'callback' => 'ajax_xcos_tbc_review_example_list_callback',
+		      ),
+            '#options' => _ajax_xcos_tbc_review_get_chapter_list($selected),
+            '#states' => array('invisible' => array(':input[name="book"]' => array('value' => 0),),),  
+        );
+        $form["example"] = array(
+            "#type" => "select",            
+            '#prefix' => '<div id="ajax_xcos_tbc_review_select_example_lists">',
+				'#suffix' => '</div>',
+            "#title" => t("Please select the example"),
+            '#validated' => TRUE,
+            '#ajax' => array(
+		          'callback' => 'ajax_xcos_tbc_review_example_error_callback',
+		      ),
+           // "#options" => _get_books($user->uid),
+           '#states' => array('invisible' => array(':input[name="book"]' => array('value' => 0),),),  
+        );
+        
+        
+       // if($form_state['values']['example'] > 0){
+        $form["error"] = array(
+            "#type" => "fieldset",
+            "#title" => "Types of errors found",
+            "#prefix" => "<div id='comment-error-wrapper'>",
+            "#suffix" => "</div>",
+            '#states' => array('invisible' => array(':input[name="book"]' => array('value' => 0),),),  
+        );
+        $form["error"]["ois"] = array(
+             "#type" => "radios",
+            "#title" => t("Can the Xcos example be opened in Scilab 6.1.0? "),
+            "#options" => array(
+                t("Yes"),
+                t("No"),
+                t("NA")
+            ),
+            '#required' => TRUE
+        );
+        $form["error"]["ncf"] = array(
+            "#type" => "radios",
+            "#title" => t("Is the recommended naming convention followed for the xcos file (for example: Ex1_3.xcos for naming example 3 from chapter 1)?"),
+            "#options" => array(
+                t("Yes"),
+                t("No"),
+                t("NA")
+            ),
+            '#required' => TRUE
+            //'#states' => array('invisible' => array(':input[name="book"]' => array('value' => 0),),),  
+        );
+        $form["error"]["axl"] = array(
+            "#type" => "radios",
+            "#title" => t("Are the plot axes labeled?"),
+            "#options" => array(
+                t("Yes"),
+                t("No"),
+                t("NA")
+            ),
+            '#required' => TRUE
+            //'#states' => array('invisible' => array(':input[name="book"]' => array('value' => 0),),),  
+        );
+        $form["error"]["acn"] = array(
+            "#type" => "radios",
+            "#title" => t("Are the input/output blocks annotated with correct names?"),
+            "#options" => array(
+                t("Yes"),
+                t("No"),
+                t("NA")
+            ),
+            '#required' => TRUE
+          // '#states' => array('invisible' => array(':input[name="book"]' => array('value' => 0),),),  
+        );
+
+        $form["error"]["sua"] = array(
+            "#type" => "radios",
+            "#title" => t("Is the input/output variable notation/symbols consistent with the TBC/Book?"),
+            "#options" => array(
+                t("Yes"),
+                t("No"),
+                t("NA")
+            ),
+            '#required' => TRUE
+           // '#states' => array('invisible' => array(':input[name="book"]' => array('value' => 0),),),  
+        );
+        $form["error"]["auu"] = array(
+            "#type" => "radios",
+            "#title" => t("Is the output displayed with proper units?"),
+            "#options" => array(
+                t("Yes"),
+                t("No"),
+                t("NA")
+            ),
+            '#required' => TRUE
+          //'#states' => array('invisible' => array(':input[name="book"]' => array('value' => 0),),),  
+        );
+        $form["error"]["amt"] = array(
+            "#type" => "radios",
+            "#title" => t("Are the answers matching with the TBC/Book OR are the deviations in the answers justified in the diagram?"),
+            "#options" => array(
+                t("Yes"),
+                t("No"),
+                t("NA")
+            ),
+            '#required' => TRUE
+         //'#states' => array('invisible' => array(':input[name="book"]' => array('value' => 0),),),     
+        );
+        $form["error"]["dmx"] = array(
+            "#type" => "radios",
+            "#title" => t("Are the dependencies, if any, mentioned in the Xcos diagram?"),
+            "#options" => array(
+                t("Yes"),
+                t("No"),
+                t("NA")
+            ),
+            '#required' => TRUE
+           //'#states' => array('invisible' => array(':input[name="book"]' => array('value' => 0),),),  
+        );
+        $form["error"]["dwe"] = array(
+            "#type" => "radios",
+            "#title" => t("Does the dependency file work as expected?"),
+            "#options" => array(
+                t("Yes"),
+                t("No"),
+                t("NA")
+            ),
+            '#required' => TRUE
+           //'#states' => array('invisible' => array(':input[name="book"]' => array('value' => 0),),),  
+        );
+        /*$form["error"]["aci"] = array(
+            "#type" => "radios",
+            "#title" => t("Appropriate comments included as mentioned in checklist point 7?"),
+            "#options" => array(
+                t("Yes"),
+                t("No"),
+                t("NA")
+            ),
+          // '#states' => array('invisible' => array(':input[name="book"]' => array('value' => 0),),),  
+        );*/
+       /* $form["error"]["teo"] = array(
+            "#type" => "radios",
+            "#title" => t("Typographical errors in output and/or comments?"),
+            "#options" => array(
+                t("Yes"),
+                t("No"),
+                t("NA")
+            ),
+          //'#states' => array('invisible' => array(':input[name="book"]' => array('value' => 0),),),  
+        );*/
+        
+        $form["error"]["omc"] = array(
+            "#type" => "radios",
+            "#title" => t("Overall does this example require any modifications/corrections?"),
+            "#options" => array(
+                t("Yes"),
+                t("No")
+            ),
+            '#required' => TRUE
+           //'#states' => array('invisible' => array(':input[name="book"]' => array('value' => 0),),),  
+        );
+        $form["error"]["comment"] = array(
+            "#type" => "textarea",
+            "#title" => t("Other commment? (if any)"),
+
+           //'#states' => array('invisible' => array(':input[name="book"]' => array('value' => 0),),),     
+        );
+        $form["error"]["submit"] = array(
+            "#type" => "submit",
+            "#value" => "Submit Comment",
+           // '#states' => array('invisible' => array(':input[name="book"]' => array('value' => 0),),),     
+        );
+       // }
+        return $form;
+    }
+  
+    
+    function ajax_xcos_tbc_review_chapter_list_callback($form, $form_state) {
+        $commands = array();
+        $book_default_value = $form_state['values']['book'];
+   
+          if($book_default_value != 0){    
+               $form["chapter"]["#options"] = _ajax_xcos_tbc_review_get_chapter_list($book_default_value);
+	            $commands[] = ajax_command_replace('#ajax_xcos_tbc_review_select_chapter_lists', drupal_render($form['chapter']));
+	            $commands[] = ajax_command_html('#ajax_xcos_tbc_review_select_example_lists','');
+	            $commands[] = ajax_command_html('#comment-error-wrapper','');
+    
+         }else{      
+	           $commands[] = ajax_command_html('#ajax_xcos_tbc_review_select_chapter_lists','');
+	           $commands[] = ajax_command_html('#ajax_xcos_tbc_review_select_example_lists','');
+	           $commands[] = ajax_command_html('#comment-error-wrapper','');
+   }
+     return array('#type' => 'ajax', '#commands' => $commands);
+    }
+    
+    function ajax_xcos_tbc_review_example_list_callback($form, $form_state) {
+        $commands = array();
+        $chapter_default_value = $form_state['values']['chapter'];
+   
+          if($chapter_default_value != 0){    
+               $form["example"]["#options"] = _ajax_xcos_tbc_review_get_example_list($chapter_default_value);
+	            $commands[] = ajax_command_replace('#ajax_xcos_tbc_review_select_example_lists', drupal_render($form["example"]));
+	            $commands[] = ajax_command_html('#comment-error-wrapper',''); 
+         }else{
+	           $commands[] = ajax_command_html('#ajax_xcos_tbc_review_select_example_lists','');
+	           $commands[] = ajax_command_html('#comment-error-wrapper','');
+   }
+     return array('#type' => 'ajax', '#commands' => $commands);
+    }
+    
+    function ajax_xcos_tbc_review_example_error_callback($form, $form_state) {
+        $commands = array();
+        $example_default_value = $form_state['values']['example'];
+   
+          if($example_default_value != 0){    
+               $form["error"]['#states'] = array('invisible' => array(':input[name="book"]' => array('value' => 0),),);
+	            $commands[] = ajax_command_replace('#comment-error-wrapper', drupal_render($form["error"]));
+    
+         }else{
+	          // $commands[] = ajax_command_html('#ajax_xcos_tbc_review_select_example_lists','');
+	           $commands[] = ajax_command_html('#comment-error-wrapper','');
+   }
+     return array('#type' => 'ajax', '#commands' => $commands);
+    }
+     
+    /*function xcos_tbc_external_review_comment_form_validate($form, &$form_state) {
+        // for future use
+    }*/
+
+    function xcos_tbc_external_review_comment_form_submit($form, &$form_state) {
+        global $user;
+        $v = $form_state["values"];
+        /*$query = "
+            INSERT INTO {xcos_external_review_comments}
+            (uid, preference_id, chapter_id, example_id, ncf, acn, axl, sua, dmx, dwe, aci, auu, teo, amt, comment, review)
+            VALUES
+            (
+                %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, '%s', 
+                (
+                    SELECT review FROM xcos_external_review_details WHERE preference_id = %d
+                )
+            )
+        ";
+        $result = db_query(
+            $query, $user->uid, $v["book"], $v["chapter"], $v["example"], 
+            $v["ncf"], $v["acn"], $v["axl"], $v["sua"], $v["dmx"], $v["dwe"], 
+            $v["aci"], $v["auu"], $v["teo"], $v["amt"], $v["comment"], $v["book"]
+        );*/
+        
+        $query = "
+            INSERT INTO {xcos_external_review_comments}
+            (uid, preference_id, chapter_id, example_id, ois, ncf, acn, psi, axl, sua, dmx, dwe, auu, amt, omc, comment, review, hidden)
+            VALUES
+            (
+                :uid, :preference_id, :chapter_id, :example_id, :ois, :ncf, :acn, :psi, :axl, :sua, :dmx, :dwe, :auu, :amt, :omc, :comment,  
+                (
+                    SELECT review FROM xcos_external_review_details WHERE preference_id = :pref_id
+                ), :hidden
+            )
+        ";
+        $args = array(
+                ':uid' => $user->uid,
+                ':preference_id' => $v["book"],
+                ':chapter_id' => $v["chapter"],
+                ':example_id' => $v["example"], 
+                ':ois' =>$v['ois'],
+                ':ncf' => $v["ncf"],
+                ':acn' => $v["acn"],
+                ':psi' => 0,
+                ':axl' => $v["axl"],
+                ':sua' => $v["sua"],
+                ':dmx' => $v["dmx"],
+                ':dwe' => $v["dwe"],
+                ':auu' => $v["auu"],
+                ':amt' => $v["amt"],
+                ':omc' => $v["omc"],
+                ':comment' => $v["comment"],
+                //':review' => 0,
+                ':hidden' => 0,
+                ':pref_id' => $v["book"],
+                );
+       $result = db_query($query, $args);
+        
+        drupal_set_message(t("Comment submited successfully"), "status");
+    }
+
+    /* Ajax Calls */
+    function xcos_tbc_external_review_ajax($item, $key) {
+        function _bool($var) {
+            if($var == 1) {
+                return "No";
+            }
+            else if($var == 2){
+                return "NA";
+            }
+            else
+                return "Yes";
+        }
+        
+        
+        $data = "";
+        if($item == "book" && $key) {
+            /*$query = "select * from {xcos_textbook_companion_chapter} where preference_id = %d order by number";
+            $result = db_query($query, $key);*/
+            $query = db_select('xcos_textbook_companion_chapter');
+            $query->fields('xcos_textbook_companion_chapter');
+            $query->condition('preference_id', $key);
+            $query->orderBy('number', 'ASC');
+            $result = $query->execute();
+            
+            $data .= "<option value='0'>Please select the chapter.</option>";
+            while($row = $result->fetchObject()) {
+                $data .= "<option value='{$row->id}'>{$row->number} {$row->name}</option>";
+            }
+        } else if($item == "chapter" && $key) {
+            /*$query = "select * from {xcos_textbook_companion_example} where chapter_id = %d order by number";
+            $result = db_query($query, $key);*/
+            $query = db_select('xcos_textbook_companion_example');
+            $query->fields('xcos_textbook_companion_example');
+            $query->condition('chapter_id', $key);
+            $query->orderBy('number', 'ASC');
+            $result = $query->execute();
+            $data .= "<option value='0'>Please select the example.</option>";
+            while($row = $result->fetchObject()) {
+                $data .= "<option value='{$row->id}'>{$row->number} {$row->caption}</option>";
+            }
+        } else if($item == "xcos-comment" && $key) {
+            /*$query = "
+                SELECT * FROM xcos_external_review_comments erc 
+                LEFT JOIN xcos_textbook_companion_example_files tcef 
+                ON (erc.example_id = tcef.example_id AND tcef.filetype = 'S')
+                WHERE erc.id = %d
+            ";
+            $result = db_query($query, $key);*/
+            //var_dump($key);die;
+            $query = db_select('xcos_external_review_comments', 'erc');
+            $query->fields('erc');
+            $query->leftJoin ("xcos_textbook_companion_example_files", "tcef", "(erc.example_id = tcef.example_id AND tcef.filetype = 'S')");
+            $query->fields('tcef');
+            $query->condition('erc.id', $key);
+            $result = $query->execute();
+            $row = $result->fetchObject();
+            
+            /* fetching example file data */
+            $uploads_dir = $_SERVER['DOCUMENT_ROOT'] . base_path() . "xcos_uploads/";
+            $example_path = $uploads_dir . $row->filepath;
+            $example = file_get_contents(drupal_realpath($example_path));
+            //var_dump($example_path);
+            //var_dump($row);die;
+
+            $data .= "<table><th>Type of Error</th><th>Status</th>";
+            $data .= "<tr><td>Can the Xcos example be opened in Scilab 6.1.0?</td><td>" . _bool($row->ois) . "</td></tr>";
+            $data .= "<tr><td>Is the recommended naming convention followed for the xcos file (for example: Ex1_3.xcos for naming example 3 from chapter 1)?</td><td>" . _bool($row->ncf) . "</td></tr>";
+            $data .= "<tr><td>Are the plot axes labeled?</td><td>" . _bool($row->axl) . "</td></tr>";
+            $data .= "<tr><td>Are the input/output blocks annotated with correct names?</td><td>" . _bool($row->acn) . "</td></tr>";
+            $data .= "<tr><td>Is the input/output variable notation/symbols consistent with the TBC/Book?</td><td>" . _bool($row->sua) . "</td></tr>";
+            $data .= "<tr><td>Is the output displayed with proper units?</td><td>" . _bool($row->auu) . "</td></tr>";
+            $data .= "<tr><td>Are the answers matching with the TBC/Book OR are the deviations in the answers justified in the diagram?</td><td>" . _bool($row->amt) . "</td></tr>";
+            $data .= "<tr><td>Are the dependencies, if any, mentioned in the Xcos diagram?</td><td>" . _bool($row->dmx) . "</td></tr>";
+            $data .= "<tr><td>Does the dependency file work as expected?</td><td>" . _bool($row->dwe) . "</td></tr>";
+            $data .= "<tr><td>Overall does this example require any modifications/corrections?</td><td>" . _bool($row->omc) . "</td></tr>";
+            $data .= "<tr><td>Any Other Comment?</td><td>" . $row->comment . "</td></tr>";
+            $data .= "</table>";
+            $data .= "<textarea style=' background:#fafafa' readonly>";
+            $data .= "{$example}</textarea>";
+        } else if($item == "hide-show" && $key) {
+           /* $query = "
+                UPDATE external_review_comments
+                SET hidden = !hidden
+                WHERE id = %d
+            ";
+            $result = db_query($query, $key);
+            */
+             $query = "
+                UPDATE xcos_external_review_comments
+                SET hidden = !hidden
+                WHERE id = :id
+            ";
+            $args = array(':id' => $key);
+            $result = db_query($query, $args);
+           
+           /* $query = db_update('xcos_external_review_comments');
+            $query->fields(array(
+              'hidden' => 'NOT hidden',
+            ));
+            $query->condition('id', $key);
+            $result = $query->execute();*/
+
+            $data .= $key;
+
+        } 
+
+         else if($item == "hide-show1") {
+             
+           /* $query = "
+                UPDATE xcos_external_review_details
+                SET hidden = !hidden
+                WHERE preference_id = %d
+            ";
+            $result = db_query($query,$key);*/
+             $query = "
+                UPDATE xcos_external_review_details
+                SET hidden = !hidden
+                WHERE preference_id = :preference_id
+            ";
+              $args = array(':preference_id' =>  $key);
+            $result = db_query($query, $args);
+            /*$query = db_update('xcos_external_review_details', 'erd');
+            $query->fields('erd', array(
+            'erd.hidden' => 'NOT erd.hidden',
+                    ));
+           $query->condition('preference_id', $key);
+           $result = $query->execute();*/
+            $data .= $key;
+
+        }else if($item == "toggle" && $key) {
+          /*  $query = "
+                UPDATE external_review_comments
+                SET hidden = !hidden
+                WHERE preference_id = %d AND (
+                    dmx != 1 AND
+                    dwe != 0 AND
+                    amt != 1
+                )
+            ";
+            $result = db_query($query, $key);*/
+             $query = "
+                UPDATE xcos_external_review_comments
+                SET hidden = !hidden
+                WHERE preference_id = :preference_id AND (
+                    dmx != 1 AND
+                    dwe != 0 AND
+                    amt != 1
+                )
+            ";
+            $args = array(':preference_id' =>  $key);
+            $result = db_query($query, $args);
+           /* $query = db_update('xcos_external_review_comments');
+            $query->fields(array(
+              'hidden' => '!hidden',
+            ));
+            $query->condition('preference_id',  $key);
+            $query->condition('dmx', 1, '<>');
+            $query->condition('amt', 1, '<>');
+            $result = $query->execute();*/
+            $data .= $key;
+        }
+        
+        echo $data;
+        exit();
+    }
+
+    /* Comment form helper functions */
+    function _ajax_xcos_tbc_review_get_books_list($uid) {
+        $query = "select * from {xcos_textbook_companion_preference} where id in 
+            (select preference_id from {xcos_external_review_details} where uid = :uid) ORDER BY book ASC
+        ";
+        $result = db_query($query, array(":uid" =>$uid));
+        
+       
+        
+        $books = array();
+        $books[0] = "Please select a book";
+        while($row = $result->fetchObject()) {
+            $books[$row->id] = $row->book.' [ '.$row->author.' ]';
+        }
+        return $books;
+    }
+
+    function xcos_tbc_external_review_status_edit_form($form, &$form_state, $preference_id=0) {
+        /*$query = "
+            SELECT * FROM xcos_external_review_details
+            WHERE preference_id = %d
+        ";        
+        $result = db_query($query, $preference_id);*/
+        /*$query = db_select('xcos_external_review_details');
+                 $query->fields('xcos_external_review_details');
+                 $query->condition('preference_id', $preference_id);
+        $result = $query->execute();*/
+                
+         $query = "
+            SELECT * FROM xcos_external_review_details
+            WHERE preference_id = :preference_id
+        "; 
+        $args = array(':preference_id' => $preference_id);       
+        $result = db_query($query,$args);        
+        $row = $result->fetchObject();
+        
+        $form = array();
+        $form = array(
+            "#prefix" => "<div id='status-edit-form'>",
+            "#suffix" => "</div>"
+        );
+        $form["review"] = array(
+            "#type" => "select",
+            "#title" => "Review Number",
+            "#options" => range(0,10),
+            "#default_value" => $row->review,
+        );
+        $form["status"] = array(
+            "#type" => "radios",
+            "#title" => "Status",
+            "#options" => array(
+                t("Ongoing"),
+                t("Completed")
+            ),
+            "#default_value" => $row->completed,
+        );
+        $form["preference_id"] = array(
+            "#type" => "hidden",
+            "#default_value" => $preference_id
+        );
+        $form["submit"] = array(
+            "#type" => "submit",
+            "#value" => "Update"
+        );
+        $form["cancel"] = array(
+            "#type" => "button",
+            "#value" => "Cancel",
+        );
+        return $form;
+    }
+
+    function xcos_tbc_external_review_status_edit_form_submit($form, &$form_state) {
+        /*$query = "
+            UPDATE xcos_external_review_details
+            SET review = {$form_state['values']['review']},
+            completed = {$form_state['values']['status']}
+            WHERE preference_id = {$form_state['values']['preference_id']}
+        ";
+        $result = db_query($query);*/        
+        $preferenceid =  $form_state['values']['preference_id'];
+        $completed = $form_state['values']['status'];
+        $review = $form_state['values']['review'];
+        $query = db_update('xcos_external_review_details');
+        $query->fields(array(
+          'review' => $review,
+          'completed' => $completed,
+        ));
+        $query->condition('preference_id',  $preferenceid);
+        $result = $query->execute();
+        if(!$result) {
+            drupal_set_message("An error occured during updation.", "error");
+        } else {
+            drupal_set_message("Updated successfully.", "status");
+        }
+    }
+
+    function xcos_tbc_external_review_manage_status_all($action="", $preference_id=0, $confirm="") {
+        global $base_url;
+        $page_content = "";
+        if($action == "next" && $preference_id && $confirm == "yes") {
+            $query = "
+                UPDATE xcos_external_review_details 
+                SET review = review + 1, completed = 0, sent = 0
+                WHERE preference_id = :preference_id
+            ";
+	         $args = array(":preference_id" => $preference_id);
+            $result = db_query($query,$args);
+           /* $query = db_update('xcos_external_review_details');
+            $query->fields(array(
+              'review' => 'review + 1',
+              'completed' => 0,
+              'sent' => 0,
+            ));
+            $query->condition('preference_id', $preference_id);
+            $result = $query->execute();*/
+            
+            if (!$result) {
+                drupal_set_message("Database updation failed", "error");
+            } else {
+                /* preparing to send mail to reviewer */
+                $query = "
+                    SELECT * FROM xcos_textbook_companion_preference pre
+                    LEFT JOIN xcos_textbook_companion_proposal pro ON pre.proposal_id = pro.id
+                    LEFT JOIN xcos_external_review_details erd ON pre.id = erd.preference_id
+                    LEFT JOIN users usr ON erd.uid = usr.uid
+                    WHERE pre.id = :preference_id
+                ";
+                $result = db_query($query, array(':preference_id' => $preference_id));
+                
+                $row = $result->fetchObject();
+                $review_no = xcos_suffix($row->review);
+                $download_link = "<a href='{$base_url}/xcos-textbook-companion/full-download-external/book/{$preference_id}'>Download [.zip]</a>";
+                
+                /* sending mail */
+                $to = "{$row->mail}";
+                $subject = "Please Start {$review_no} Review - Textbook Companion Project";
+                $message = "
+                    Dear {$row->name} <br><br>
+                    The student has submitted the corrected codes.<br>
+                    Please start the {$review_no} review for the following book.<br><br>
+                    Book: <b>{$row->book}</b> <br>
+                    Author: <b>{$row->author}</b><br>
+                    Review: <b>{$review_no}</b> <br><br>
+                    The updated code for the book can be downloaded here: <b>{$download_link}</b><br><br>
+                    You can start giving comments on error codes for this review.<br>
+                    Please make sure to mark the review as completed again after you finish this review.<br><br>
+                    Thank you for your contribution. <br><br>
+                    Best Wishes, <br>
+                    Scilab.in
+                ";
+     
+             //   drupal_mail_send($message);
+                 xcos_send_mail("textbook@scilab.in", $to, $subject, $message);
+                drupal_set_message("Next review started.", "status");
+                drupal_goto("xcos-tbc-external-review/manage-status");
+            }
+        } else if($action == "next" && $preference_id) {
+           $query = "
+                SELECT pre.book, pre.author, usr.name, erd.review, ext.name AS reviewer FROM xcos_textbook_companion_preference pre
+                LEFT JOIN xcos_textbook_companion_proposal pro ON pre.proposal_id = pro.id
+                LEFT JOIN users usr ON pro.uid = usr.uid
+                LEFT JOIN xcos_external_review_details erd ON  pre.id = erd.preference_id
+                LEFT JOIN users ext ON erd.uid = ext.uid
+                WHERE pre.id = :preference_id
+            ";
+            $result = db_query($query, array(':preference_id' => $preference_id));
+           
+            
+            $row = $result->fetchObject();
+            $page_content .= "Are you sure you want start the <b>" . xcos_suffix($row->review+1) . "</b> review? <br><br>";
+            $page_content .= "Book: <b>{$row->book}</b> <br>";
+            $page_content .= "Author: <b>{$row->author}</b> <br>";
+            $page_content .= "Contributor: <b>{$row->name}</b> <br>";
+            $page_content .= "External Reviewer: <b>{$row->reviewer}</b> <br><br>";
+            $page_content .= l("Yes", "xcos-tbc-external-review/manage-status/next/{$preference_id}/yes");
+            $page_content .= " | ";
+            $page_content .= l("Cancel", "xcos-tbc-external-review/manage-status");
+        } else if($action = "edit" && $preference_id) {
+            /*$query = "
+                SELECT * FROM xcos_external_review_details erd
+                LEFT JOIN xcos_textbook_companion_preference pre ON erd.preference_id = pre.id
+                WHERE preference_id = {$preference_id}
+            ";
+            
+            $result = db_query($query);*/
+           $query = "
+                SELECT * FROM xcos_external_review_details erd
+                LEFT JOIN xcos_textbook_companion_preference pre ON erd.preference_id = pre.id
+                WHERE preference_id = :preference_id
+            ";
+            $args = array(':preference_id'=> $preference_id);
+            $result = db_query($query,$args);
+            $row = $result->fetchObject();
+            
+            $page_content .= "<h1>Status Edit Form</h1>";
+            $page_content .= "Book: <b>{$row->book}</b> <br>";
+            $page_content .= "Author: <b>{$row->author}</b> <br>";
+            $xcos_tbc_external_review_status_edit_form = drupal_get_form("xcos_tbc_external_review_status_edit_form", $preference_id);
+            $page_content .= drupal_render($xcos_tbc_external_review_status_edit_form);
+            return $page_content;
+        } else {
+            /*$query = "
+                SELECT * from xcos_textbook_companion_preference tcp INNER JOIN xcos_external_review_details erd 
+                ON (tcp.id = erd.preference_id AND erd.status=1) INNER JOIN users ON (erd.uid = users.uid)
+                ORDER BY users.name
+            ";
+            $result = db_query($query);*/
+          /*  $query = db_select('xcos_textbook_companion_preference', 'tcp');
+            $query->fields('tcp');
+            $query->innerJoin('xcos_external_review_details', 'erd', 'tcp.id = erd.preference_id AND erd.status = 1');
+            $query->innerJoin('users', '', 'erd.uid = users.uid');
+            $query->orderBy('users.name', 'ASC');
+            $result = $query->execute();*/
+            
+            $query = "
+                SELECT * from xcos_textbook_companion_preference tcp INNER JOIN xcos_external_review_details erd 
+                ON (tcp.id = erd.preference_id AND erd.status=1) INNER JOIN users ON (erd.uid = users.uid)
+                ORDER BY users.name
+            ";
+            $result = db_query($query);
+
+            $headers = array(
+                "Book", "Review No.", 
+                "Status", "Reviewer",
+                "Action",
+            );
+            $rows = array();
+            while($row = $result->fetchObject()) {
+                $item = array(
+                    "{$row->book}<br><em>by {$row->author}</em>",
+                    xcos_suffix($row->review),
+                    ($row->completed?"Completed":"Ongoing"),
+                    "{$row->name}",
+                    ($row->completed?l("Next", "xcos-tbc-external-review/manage-status/next/" . $row->preference_id):"---") . " | " . l("Edit", "xcos-tbc-external-review/manage-status/edit/{$row->preference_id}")
+                );
+                array_push($rows, $item);
+            }
+           
+            $page_content .= "<h2><u>Selected Books</u></h2>";
+            //$page_content .= theme("table", $headers, $rows);
+            $page_content .= theme('table', array('header' => $headers, 'rows' => $rows ));
+            
+            /*$query = "
+                SELECT * from xcos_textbook_companion_preference tcp INNER JOIN xcos_external_review_details erd 
+                ON (tcp.id = erd.preference_id AND erd.status=0) INNER JOIN users ON (erd.uid = users.uid)
+                ";
+            $result = db_query($query);*/
+           /* $query = db_select('xcos_textbook_companion_preference', 'tcp');
+            $query->fields('tcp');
+            $query->innerJoin('xcos_external_review_details', 'erd', 'tcp.id = erd.preference_id AND erd.status = 0');
+            $query->innerJoin('users', '', 'erd.uid = users.uid');
+            $result = $query->execute();*/
+             $query = "
+                SELECT * from xcos_textbook_companion_preference tcp INNER JOIN xcos_external_review_details erd 
+                ON (tcp.id = erd.preference_id AND erd.status=0) INNER JOIN users ON (erd.uid = users.uid)
+                ";
+            $result = db_query($query);
+            $headers = array(
+                "Book", 
+                "Author",
+            );
+            $rows = array();
+            while($row = $result->fetchObject()) {
+                $item = array(
+                    "{$row->book}",
+                    "{$row->author}",
+                );
+                array_push($rows, $item);
+            }
+            $page_content .= "<h2><u>Books Not Selected</u></h2>";
+            //$page_content .= theme("table", $headers, $rows);
+            $page_content .= theme('table', array('header' => $headers, 'rows' => $rows ));
+        }
+        return $page_content;
+    }
+
+    function xcos_tbc_external_review_manage_status_recent_all() {
+        $page_content = "";
+        $query = "
+            SELECT * FROM xcos_external_review_details erd
+            LEFT JOIN xcos_textbook_companion_preference pre ON erd.preference_id = pre.id
+            LEFT JOIN users usr ON erd.uid = usr.uid
+            WHERE erd.completed = 1
+            ORDER BY time DESC
+        ";
+        $result = db_query($query);
+        /*$query = db_select('xcos_external_review_details', 'erd');
+        $query->fields('erd');
+        $query->leftJoin('xcos_textbook_companion_preference', 'pre', 'erd.preference_id = pre.id');
+        $query->leftJoin('users', 'usr', 'erd.uid = usr.uid');
+        $query->condition('erd.completed', 1);
+        $query->orderBy('time', 'DESC');
+        $result = $query->execute();*/
+        $headers = array(
+            "Book", "Review No.",
+            "Status", "Time",
+            "Reviewer", 
+        );
+        $rows = array();
+        while($row = $result->fetchObject()) {
+            $item = array(
+                "{$row->book}<br><em>by {$row->author}</em>",
+                xcos_suffix($row->review),
+                ($row->status?"Completed":"Ongoing"),
+                "{$row->time}",
+                "{$row->name}"
+            );
+            array_push($rows, $item);
+        }
+        //$page_content .= theme("table", $headers, $rows);
+        $page_content .= theme('table', array('header' => $headers, 'rows' => $rows ));
+        return $page_content;
+    }
+
+    function xcos_tbc_external_review_manage_comments_all($preference_id=0, $review=0) {
+        global $base_url;
+        $page_content = "";
+        if($preference_id) {
+        $page_content .= "<span class='toggle-hide-show' data-preference='{$preference_id}'>Toggle Hide-Show</span>";
+        $page_content .= "<div class='clearfix'></div>";
+        $page_content .= "<br>";
+        /* creating review links */
+       /* $query = "
+            SELECT DISTINCT(review) FROM xcos_external_review_comments
+            WHERE preference_id = %d
+            ORDER BY review DESC
+        ";
+        $result = db_query($query, $preference_id);*/
+        $query = db_select('xcos_external_review_comments');
+        $query ->distinct();
+        $query ->fields('xcos_external_review_comments',array('review'));
+        $query->condition('preference_id', $preference_id);
+        /*$query->condition(
+            )*/
+        $query->orderBy('review', 'DESC');
+        $result = $query->execute();
+        $tmp = $review; // for active class in case of 0
+       while($row = $result->fetchObject()) {
+       
+          $option["attributes"]["class"] = "review-links";
+            if($review == $row->review) {
+                if(!is_array($option['attributes']['class'])){
+                     $option['attributes']['class'] = (array)$option['attributes']['class'];
+                }
+                     $option['attributes']['class'][] .= " active";
+            } else if($tmp == 0) {
+                 if(!is_array($option['attributes']['class'])){
+                     $option['attributes']['class'] = (array)$option['attributes']['class'];
+                 }
+                     $option['attributes']['class'][] .= " active";
+                     $tmp = -1;
+             }
+            $page_content .= l(
+                xcos_suffix($row->review) . "review", 
+                "xcos-tbc-external-review/manage-comments/{$preference_id}/{$row->review}",
+                $option
+            );
+        }
+    
+       //var_dump($review);die; 
+        $page_content .= "<br><br><hr>";
+            global $user;
+            /* displaying comments of a particular book */
+            if($review) {
+                $query = "
+                    SELECT erc.*, cha.number AS chapter, exa.number AS example FROM xcos_external_review_comments erc
+                    LEFT JOIN xcos_textbook_companion_chapter cha ON cha.id = erc.chapter_id 
+                    LEFT JOIN xcos_textbook_companion_example exa ON exa.id = erc.example_id
+                    WHERE erc.preference_id = :preference_id AND review = :review
+                    ORDER BY erc.chapter_id, erc.example_id
+                    ";
+                $result = db_query($query, array(':preference_id' =>$preference_id, ':review' => $review));
+                
+             
+                  
+                 
+            } else {
+               $query = "
+                    SELECT erc.*, cha.number AS chapter, exa.number AS example FROM xcos_external_review_comments erc
+                    LEFT JOIN xcos_textbook_companion_chapter cha ON cha.id = erc.chapter_id 
+                    LEFT JOIN xcos_textbook_companion_example exa ON exa.id = erc.example_id
+                    WHERE erc.preference_id = :preference_id AND review = (
+                        SELECT MAX(review) FROM xcos_external_review_comments WHERE preference_id = :pref_id
+                    )
+                    ORDER BY erc.chapter_id, erc.example_id
+                ";
+                $result = db_query($query, array(':preference_id' =>$preference_id, ':pref_id' => $preference_id));
+           
+               
+               
+            }
+            $headers = array(
+                "Chapter", "Example",
+                "Time", "Score", "Action"
+            );
+            $rows = array();
+            while($row = $result->fetchObject()) {
+                /* $view_options = array(
+                    # linking in drupal l() 
+                    "fragment" => " ",
+                    "external" => TRUE,
+                        "attributes" => array(
+                        "class" => "view-comment",
+                        "data-comment" => "{$row->id}",
+                    )
+                );*/
+                $hide_options= array(
+                    /* # linking in drupal l() */
+                    "fragment" => " ",
+                    "external" => TRUE,
+                    "attributes" => array(
+                        "class" => "hide-show",
+                        "data-comment" => "{$row->id}",
+                    )
+                );
+                
+                /* scoring comments */
+                $score = 0;
+                $row->ois?666:$score++;
+                $row->ncf?666:$score++;
+                $row->axl?666:$score++;
+                $row->acn?666:$score++;
+                $row->sua?666:$score++;
+                $row->auu?666:$score++;
+                $row->amt?666:$score++;
+                $row->dmx?666:$score++;
+                $row->dwe?666:$score++;
+                
+                $item = array(
+                    "data" => array(
+                        "{$row->chapter}",
+                        "{$row->example}",
+                        "{$row->time}",
+                        "{$score}",
+                       //l("View", "", $view_options),
+                         l("View", "", array(  "fragment" => " ",
+                        "external" => TRUE,"attributes" => array(                      
+                        "id" => "xcos-popup_window",
+                        "data-comment" => "{$row->id}",
+                    ))),
+                       
+                    ),
+                );
+           /* if($row->dmx == 1 || $row->dwe == 0 || $row->amt == 1) {
+                    $error_class = array("class" => "error-comment");
+                    $item = array_merge($item, $error_class);
+                }
+                */
+               $key = key(array('class' => $item["class"]));
+               if($row->dmx == 1 || $row->dwe == 0 || $row->amt == 1) {
+                    $item["class"][$key] .= " error-comment";
+                }
+              
+             $key = key(array('class' => $item["class"]));
+                if($row->hidden) {
+                 $item["class"][$key] .= " dull";
+                } 
+                /* hide/unhide link */
+              end($item["data"]);
+                $key= key($item["data"]);
+                if($row->hidden) {
+                    $item["data"][$key] .= " | " . l("Show", "", $hide_options);
+                } else {
+                    $item["data"][$key] .= " | " . l("Hide", "",$hide_options);
+                }
+                array_push($rows, $item);
+            }
+            //$page_content .= theme("table", $headers, $rows);
+             $page_content .= theme('table', array('header' => $headers, 'rows' => $rows ));
+             $page_content .= "<div id='example-xcos-popup' class='xcos-popup'>
+                                    <div class='xcos-popup-body'>
+                                        <span class='xcos-popup-exit'></span>
+                                            <div id = 'xcos-popup-content' class='xcos-popup-content'>
+                                            </div>
+                                    </div>
+                            </div>";
+            $page_content .= "<div class='xcos-popup-overlay'></div>";
+        } else {
+            /* displaying the list of books */
+            $query = "
+                SELECT DISTINCT erc.preference_id, pre.book, pre.author, usr_con.name AS contributor, usr_ext.name AS reviewer, erd.*
+                FROM xcos_external_review_comments erc
+                LEFT JOIN xcos_textbook_companion_preference pre ON erc.preference_id = pre.id
+                LEFT JOIN xcos_textbook_companion_proposal pro ON pre.proposal_id = pro.id
+                LEFT JOIN users usr_con ON usr_con.uid = pro.uid
+                LEFT JOIN users usr_ext ON usr_ext.uid = erc.uid
+                LEFT JOIN xcos_external_review_details erd ON erd.preference_id = erc.preference_id 
+                ORDER BY erd.hidden
+            ";
+             $result = db_query($query);
+           
+                     
+            $headers = array(
+                "Book", "Review No.",
+                "Status", "Contributor",
+                "Reviewer", "Action"
+            );
+            $rows = array();
+            while($row = $result->fetchObject()) {
+                  if($row->book !=NULL){
+                  $hide_optionss= array(
+                    /* # linking in drupal l() */
+                    "fragment" => " ",
+                    "external" => TRUE,
+                    "attributes" => array(
+                        "class" => "hide-show1",
+                        "manages-comment" => "{$row->preference_id}",
+                    )
+                );
+                $item = array(
+                    "data" => array(
+                        "{$row->book}<br><em>by {$row->author}</em>",
+                        xcos_suffix($row->review),
+                        ($row->completed?"Completed":"Ongoing"),
+                        "{$row->contributor}",
+                        "{$row->reviewer}",
+                        l("View", "xcos-tbc-external-review/manage-comments/" . $row->preference_id)
+                    ),
+                );
+              //  not supported in drupal 7
+              
+            /* if($row->hidden) {
+             $class_attrtibute =  $item['class']; 
+                     $class = array("class" => " dulls");
+                     $class_attrtibute .= $class;
+                } */
+                
+                 $key = key(array('class' => $item["class"]));
+                if($row->hidden) {
+                 $item["class"][$key] .= " dulls";
+                } 
+
+               
+                end($item["data"]);
+                $key = key($item["data"]);
+                if(!$row->sent) {
+                    $item["data"][$key] .= " | " . l("Mail", "xcos-tbc-external-review/mail-comments/" . $row->preference_id);
+                } else {
+                    $item["data"][$key] .= " | " . "Sent";
+                }
+                
+                /* hide/unhide link */
+                end($item);
+                $key= key($item["data"]);
+                if($row->hidden) {
+                    $item["data"][$key] .= " | " . l("Show", "",$hide_optionss);
+                } else {
+                    $item["data"][$key] .= " | " . l("Hide", "",$hide_optionss);
+                }
+//
+                array_push($rows, $item);
+            }}
+            //$page_content .= theme("table", $headers, $rows);
+            
+            $page_content .=  theme('table', array('header' => $headers, 'rows' => $rows ));
+           }
+        return $page_content;
+    }
+
+    function xcos_tbc_external_review_mail_comments_all($preference_id=0, $confirm="") {
+        function _bool($var) {
+            if($var == 1) {
+                return "No";
+            }
+            else if($var == 2){
+                return "NA";
+            }
+            else
+                return "Yes";
+        }
+        $page_content = "";
+        if($confirm == "confirm") {
+            /*$query = "
+                SELECT * FROM xcos_external_review_details
+                WHERE preference_id = %d
+                ";
+            $result = db_query($query, $preference_id);*/
+            $query = db_select('xcos_external_review_details');
+            $query->fields('xcos_external_review_details');
+            $query->condition('preference_id', $preference_id);
+            $result = $query->execute();
+            $row = $result->fetchObject();
+            $current_review = $row->review;
+            $review_dir = $_SERVER['DOCUMENT_ROOT'] . base_path() . "xcos_reviews/{$row->preference_id}/";
+            if(!file_exists($review_dir)) {
+                mkdir($review_dir, 0755, TRUE);
+            }
+            $review_file = $review_dir . "{$row->preference_id}-review-{$row->review}" . ".csv";
+            $fp = fopen($review_file, "w");
+            /* making the first row */
+            $item = array(
+                "Chapter No.", "Example No.", "Can the Xcos example be opened in Scilab 6.1.0? ",
+                "Is the recommended naming convention followed for the xcos file (for example: Ex1_3.xcos for naming example 3 from chapter 1)?", "Are the plot axes labeled?",
+                "Are the input/output blocks annotated with correct names?", "Is the input/output variable notation/symbols consistent with the TBC/Book?",
+                "Is the output displayed with proper units?",
+                "Are the answers matching with the TBC/Book OR are the deviations in the answers justified in the diagram?", "Are the dependencies, if any, mentioned in the Xcos diagram?", "Does the dependency file work as expected?", "Other Comments"
+            );
+            fputcsv($fp, $item);
+            $query = "
+                SELECT erc.*, cha.number AS chapter, exa.number AS example FROM xcos_external_review_comments erc
+                LEFT JOIN xcos_textbook_companion_chapter cha ON erc.chapter_id = cha.id
+                LEFT JOIN xcos_textbook_companion_example exa ON erc.example_id = exa.id
+                WHERE (erc.omc = 0 AND erc.hidden = 0 AND erc.preference_id = :preference_id AND erc.review = :current_review)
+                ORDER BY chapter, example
+                ";
+            $args = array(':preference_id' => $preference_id, ':current_review'=>$current_review);
+            $result = db_query($query, $args);
+            
+
+            while($row = $result->fetchObject()) {
+                $item = array(
+                    $row->chapter, $row->example,
+                    _bool($row->ois), _bool($row->ncf), _bool($row->axl), _bool($row->acn), 
+                    _bool($row->sua), _bool($row->dmx),
+                    _bool($row->dwe), _bool($row->auu),
+                    _bool($row->amt), "{$row->comment}"
+                );
+                fputcsv($fp, $item);
+            }
+            fclose($fp);
+            
+            /* preparing and sending mail */
+            $query = "
+                SELECT * FROM xcos_external_review_details erd
+                LEFT JOIN xcos_textbook_companion_preference pre ON erd.preference_id = pre.id
+                LEFT JOIN xcos_textbook_companion_proposal pro ON pre.proposal_id = pro.id
+                LEFT JOIN users usr ON pro.uid = usr.uid
+                WHERE erd.preference_id = :preference_id
+            ";
+            $args = array(':preference_id' => $preference_id);
+            $result = db_query($query, $args);
+            $row = $result->fetchObject();
+            $review_no = xcos_suffix($row->review);
+	    $file = $review_file;
+            /*********************************************************/
+            $to = $row->mail;
+	    $from = variable_get('xcos_tbc_external_review_from_email', '');
+	    $bcc = variable_get('xcos_tbc_external_review_bcc_emails', '');
+	    $cc = variable_get('xcos_tbc_external_review_cc_emails', '');
+
+            $subject = "Xcos Textbook Companion - {$review_no} Review";
+            $message = "
+                Dear {$row->name}<br><br>
+                Please find the attached file containing the list of errors found in your uploaded book: <br>
+                Book: <b>{$row->book}</b> <br>
+                Author: <b>{$row->author}</b> <br>
+                Review Number: <b>{$review_no}</b> <br><br>
+                Kindly rectify the errors and re-upload the codes on the website.<br>
+                <b>Reply to this mail once the corrections are done.</b> <br><br>
+                <i>Note: The attachment is a comma separated file, which can be viewed using any office software.</i> <br><br>
+                Regards,<br>
+                Scilab.in
+            ";
+            $file = $review_file;
+            $mail_status = xcos_send_mail_attachment($from, $to, $cc, $bcc, $subject, $message, $file);
+            //var_dump($mail_status);die;
+	    if(!$mail_status){
+		drupal_set_message("An error occurred while sending mail.", "error");
+		drupal_goto("xcos-tbc-external-review/manage-comments");
+            } else {
+                /* toggling  sent column in database */
+                /*$query = "
+                    UPDATE xcos_external_review_details
+                    SET sent = 1
+                    WHERE preference_id = %d
+                ";
+                $result = db_query($query, $preference_id);*/
+                $query = db_update('xcos_external_review_details');
+                $query->fields(array(
+                  'sent' => 1,
+                ));
+                $query->condition('preference_id', $preference_id);
+                $result = $query->execute();
+                $query = db_update('xcos_textbook_companion_preference');
+                $query->fields(array(
+                  'submited_all_examples_code' => 0,
+                ));
+                $result = $query->execute();
+                drupal_set_message("Mail sent successfully.", "status");
+                drupal_goto("xcos-tbc-external-review/manage-comments");
+            }
+        } else if($preference_id) {
+            $query = "
+                SELECT * FROM xcos_external_review_details erd
+                LEFT JOIN xcos_textbook_companion_preference pre ON erd.preference_id = pre.id
+                LEFT JOIN xcos_textbook_companion_proposal pro ON pre.proposal_id = pro.id
+                LEFT JOIN users usr ON pro.uid = usr.uid
+                WHERE erd.preference_id = :preference_id
+            ";
+            $result = db_query($query, array(':preference_id' => $preference_id));
+            
+            $row = $result->fetchObject();
+            $page_content .= "<h4>Are you sure you want to send mail?</h4><br>";
+            $page_content .= "Book: <b>{$row->book}</b><br>";
+            $page_content .= "Author: <b>{$row->author}</b><br>";
+            $page_content .= "Contributor: <b>{$row->name}</b><br>";
+            $page_content .= "Email: <b>{$row->mail}</b><br><br>";
+            $page_content .= l("Yes", "xcos-tbc-external-review/mail-comments/{$preference_id}/confirm") . " | ";
+            $page_content .= l("Cancel", "xcos-tbc-external-review/manage-comments");
+        }
+        return $page_content;
+        }
+
+    function xcos_tbc_external_review_add_book_form($form, &$form_state, $preference_id) {
+        $form = array();
+        $form = array(
+            "#prefix" => "<div id='add-book-form'>",
+            "#suffix" => "</div>"
+        );
+        $form["review"] = array(
+            "#type" => "select",
+            "#title" => "Review Number",
+            "#options" => range(0,10),
+            "#default_value" => 1
+        );
+        $form["preference_id"] = array(
+            "#type" => "hidden",
+            "#default_value" => $preference_id
+        );
+        $form["submit"] = array(
+            "#type" => "submit",
+            "#value" => "Submit"
+        );
+        $form["cancel"] = array(
+            "#type" => "button",
+            "#value" => "Cancel",
+        );
+        return $form;
+    }
+
+    function xcos_tbc_external_review_add_book_form_submit($form, &$form_state) {
+        $preference_id = $form_state["values"]["preference_id"];
+        $review = $form_state["values"]["review"];
+      
+        
+       /* $query = "
+            INSERT INTO {xcos_external_review_details}
+            (preference_id, review)
+            VALUES
+            (%d, %d)
+        ";
+        $result = db_query($query, $preference_id, $review);*/
+        $query = "
+            INSERT INTO {xcos_external_review_details}
+            (uid, preference_id, review, status, completed, published, sent)
+            VALUES
+            (:uid, :preference_id, :review, :status, :completed, :published, :sent)
+        ";
+        $args = array(':uid' => 0,
+        	     ':preference_id' => $preference_id,
+                     ':review' => $review,
+                     ':status' => 0,
+                     ':completed' => 0,
+                     ':published' => 0,
+                     ':sent' => 0                   
+               );
+        $result = db_query($query, $args);
+        
+        if(!$result) {
+            drupal_set_message("An error occured while adding the book for review.", "error");
+        } 
+        /*$query = "
+            UPDATE xcos_textbook_companion_proposal
+            SET proposal_status = 4
+            WHERE id IN
+            (SELECT proposal_id from xcos_textbook_companion_preference WHERE id = %d)
+        ";
+        $result = db_query($query, $preference_id);*/
+       /* $query = db_update('xcos_textbook_companion_proposal');
+        $query->fields(array(
+          'proposal_status' => 4,
+        ));
+
+        $subquery = db_select('xcos_textbook_companion_preference', '');
+        $subquery->fields('proposal_id', array(''));
+        $subquery->condition('id', $preference_id);
+        $query->condition('id', $subquery, 'IN');
+
+       $result = $query->execute();*/
+       $query = "
+            UPDATE xcos_textbook_companion_proposal
+            SET proposal_status = 4
+            WHERE id IN
+            (SELECT proposal_id from xcos_textbook_companion_preference WHERE id = :preference_id)
+        ";
+        $args = array(':preference_id' => $preference_id);
+        $result = db_query($query,$args);
+
+        if(!$result) {
+            drupal_set_message("Book status update failed.", "error");
+        } else {
+            drupal_set_message("Book added successfully.", "status");
+        }
+        drupal_goto("xcos-textbook-companion/manage-proposal/all");
+    }
+
+    function xcos_tbc_external_review_add_book_all($preference_id=0) {
+        if ($preference_id) {
+            $page_content = "";
+            /*$query = "
+                SELECT * FROM {xcos_textbook_companion_preference} WHERE id = %d
+            ";
+            $result = db_query($query, $preference_id);*/
+            
+             $query = "
+                SELECT * FROM {xcos_textbook_companion_preference} WHERE id = :preference_id
+            ";
+            $args =array (':preference_id' => $preference_id);
+            $result = db_query($query,$args );
+            
+            $row = $result->fetchObject();
+            $page_content .= "<strong>Do you want to continue adding the book?</strong><br>";
+            $page_content .= "Book: {$row->book} <br>";
+            $page_content .= "Author: {$row->author} <br>";
+            $xcos_tbc_external_review_add_book_form = drupal_get_form("xcos_tbc_external_review_add_book_form", $preference_id);
+            $page_content .= drupal_render($xcos_tbc_external_review_add_book_form);
+            return $page_content;
+        }
+        drupal_goto("manage_proposal/all");
+    }
+
+    function xcos_tbc_external_review_completion_form($form, &$form_state, $preference_id=10) {
+        function _missed_chapter() {
+            $chapter = array();
+            $chapter[0] = "Select Chapter";
+            $chapter = array_merge($chapter, range(1,50));
+            return $chapter;
+        }
+        function _missed_example() {
+            $example = array();
+            $example[0] = "Select Example";
+            $example = array_merge($example, range(1,80));
+            return $example;
+        }
+        $form = array();
+        $form["#action"] = url("xcos-tbc-external-review/status/complete/{$preference_id}/yes");
+        $form["wrapper"] = array(
+            "#prefix" => "<div  id='review-completion-form'>",
+            "#suffix" => "</div>"
+        );
+        $form["wrapper"]["missing"] = array(
+            "#title" => "Are all examples from the book attempted by the contributor?",
+            "#type" => "radios",
+            "#options" => array(
+                t("Yes"),
+                t("No")
+            ),
+        );
+        $form["wrapper"]["list"] = array(
+            "#prefix" => "<div id='missed-list'>",
+            "#suffix" => "</div>",
+        );
+        $form["wrapper"]["list"]["missed_chapter"] = array(
+            "#title" => "Chapter",
+            "#type" => "select",
+            "#options" => _missed_chapter()
+        );
+        $form["wrapper"]["list"]["missed_example"] = array(
+            "#title" => "Example",
+            "#type" => "select",
+            "#options" => _missed_example(),
+        );
+        $form["wrapper"]["more"] = array(
+            "#type" => "markup",
+            "#value" => "<a id='more' href='#'>Add More</a><br><br><hr>",
+        );
+        $form["wrapper"]["submit"] = array(
+            "#type" => "submit",
+            "#value" => "Submit"
+        );
+        $form["wrapper"]["cancel"] = array(
+            "#type" => "button",
+            "#value" => "Cancel",
+        );
+        return $form;
+    }
+
+    function xcos_tbc_external_review_status_all($action="", $preference_id=0, $confirm="") {
+
+        global $user;
+        $page_content = "";
+       
+        if($action == "complete" && $preference_id) {
+        
+            if($confirm == "yes"){
+           // var_dump("test");
+              /*  $query = "
+                    UPDATE xcos_external_review_details
+                    SET completed = 1
+                    WHERE preference_id = %d
+                ";
+                $result = db_query($query, $preference_id);*/
+                
+                $query = db_update('xcos_external_review_details');
+                $query->fields(array(
+                  'completed' => 1,
+                ));
+                $query->condition('preference_id', $preference_id);
+                $result = $query->execute();
+             /*****************************************************************************/   
+               /* $query = "
+                    INSERT INTO external_review_missed
+                    (preference_id, uid, chapter, example)
+                    VALUES
+                    ({$preference_id}, {$user->uid}, {$_REQUEST['missed_chapter']}, {$_REQUEST['missed_example']})
+                ";
+                
+                if ($_REQUEST["missing"]) {
+                    $i = 0;
+                    foreach($_REQUEST["missed_chapters"] as $chapter){
+                        $query .= ", ({$preference_id}, {$user->uid}, {$chapter}, {$_REQUEST['missed_examples'][$i]})";
+                        $i++;
+                    }
+                    $result = db_query($query, $preference_id);
+                }
+                */
+                
+                $query = "
+                    INSERT INTO external_review_missed
+                    (preference_id, uid, chapter, example)
+                    VALUES
+                   (:preference_id, :uid, :chapter, :example)
+                ";
+                $args = array(':preference_id' => $preference_id, ':uid' => $user->uid, ':chapter' => $_REQUEST['missed_chapter'], ':example' => $_REQUEST['missed_example']);
+                
+                if ($_REQUEST["missing"]) {
+                    $i = 0;
+                    foreach($_REQUEST["missed_chapters"] as $chapter){
+                        $args .= ", (':preference_id' => {$preference_id},':uid' => {$user->uid}, ':chapter' => {$chapter}, ':example' => {$_REQUEST['missed_examples'][$i]})";
+                        $i++;
+                    }
+                    $result = db_query($query, $args);
+                }
+             /******************************************************************************/   
+                if(!$result) {
+                    drupal_set_message("Updation failed.", "error");
+                } else {
+                    /* fetching the book and review details */
+                    $query = "
+                        SELECT * FROM xcos_external_review_details erd
+                        LEFT JOIN xcos_textbook_companion_preference pre ON erd.preference_id = pre.id
+                        WHERE erd.preference_id = :pref_id
+                    ";
+                    $result = db_query($query, array(':pref_id' => $preference_id));
+                    
+                    /*$query = db_select('xcos_external_review_details', 'erd');
+                    $query->fields('erd');
+                    $query->leftJoin('xcos_textbook_companion_preference', 'pre', 'erd.preference_id = pre.id');
+                    $query->condition('erd.preference_id',  $preference_id);
+                    $result = $query->execute();*/
+                    $row = $result->fetchObject();
+                    
+                    $review_no = xcos_suffix($row->review);
+                    /* sending mail */
+                    $to = "{$user->mail}";
+                    $subject = "External Review - Textbook Companion Project";
+                    $message = "
+                        Dear {$user->name} <br><br>
+                        You have completed a review. <br><br>
+                        Book: <b>{$row->book}</b> <br>
+                        Author: <b>{$row->author}</b><br>
+                        Review: <b>{$review_no}</b> <br><br>
+                        We will review your comments soon.<br>
+                        Thank you for your contribution. <br><br>
+                        Best Wishes, <br>
+                        Scilab.in
+                    ";
+                                      // drupal_mail_send($message);
+			 xcos_send_mail("textbook@scilab.in", $to, $subject, $message);
+
+                    drupal_set_message("Book marked as completed successfully.");
+                }
+                drupal_goto("xcos-tbc-external-review/status");
+            } else {             
+                $query = "
+                    SELECT erd.review, pre.id, pre.book, pre.author FROM xcos_external_review_details erd
+                    LEFT JOIN xcos_textbook_companion_preference pre ON erd.preference_id = pre.id
+                    WHERE erd.preference_id = :preference_id
+                ";
+                $result = db_query($query, array(':preference_id' => $preference_id));
+               
+                $row = $result->fetchObject();
+                                
+                $page_content .= "<strong>Are you sure you want to mark the book completed?</strong><br>";
+                $page_content .= "Book: {$row->book} <br>";
+                $page_content .= "Author: {$row->author} <br>";
+                $xcos_tbc_external_review_completion_form = drupal_get_form("xcos_tbc_external_review_completion_form", $preference_id);
+                $page_content .= drupal_render($xcos_tbc_external_review_completion_form);
+            }
+        } else {
+            $query = "
+                SELECT erd.*, pre.* FROM xcos_external_review_details erd
+                LEFT JOIN xcos_textbook_companion_preference pre ON erd.preference_id = pre.id
+                WHERE erd.uid = :uid
+                ORDER BY pre.book
+            ";
+            $result = db_query($query, array(":uid" =>$user->uid));
+            
+            
+            $headers = array(
+                "Book", "Review No.",
+                "Action"
+            );
+            $rows = array();
+            while($row = $result->fetchObject()) {
+                $item = array(
+                    "{$row->book}<br>by <em>{$row->author}</em>",
+                    xcos_suffix($row->review),
+                );
+                if($row->completed){
+                    array_push($item, "Completed");
+                } else {
+                    array_push(
+                        $item, l("Mark Completed", "xcos-tbc-external-review/status/complete/".$row->preference_id)
+                    );
+                }
+                array_push($rows, $item);
+            }
+            // $page_content .= theme("table", $headers, $rows);
+             $page_content .=  theme('table', array('header' => $headers, 'rows' => $rows ));
+        }
+        return $page_content;
+    }
+
+    function xcos_tbc_external_review_er_assign_book_form($form,$form_state){
+           /* $query = "  
+                 SELECT pre.id AS id, pre.book, pre.author, pre.edition, usr.uid, erd.completed FROM xcos_textbook_companion_preference pre
+                 LEFT JOIN xcos_external_review_details erd ON erd.preference_id = pre.id
+                 LEFT JOIN users usr ON usr.uid = erd.uid
+                 WHERE erd.status = 0
+                 ORDER BY pre.book ASC
+            ";*/
+         $query = "
+		SELECT pre.proposal_id, pre.id AS id, pre.book, pre.author, pre.edition, usr.uid, erd.completed FROM xcos_textbook_companion_preference pre
+                 LEFT JOIN xcos_external_review_details erd ON erd.preference_id = pre.id                
+                 LEFT JOIN users usr ON usr.uid = erd.uid
+                 LEFT JOIN xcos_textbook_companion_proposal po ON pre.proposal_id = po.id
+                 WHERE erd.status = 0 AND po.proposal_status !=3
+                 ORDER BY pre.book ASC
+		  ";
+                    
+         $result = db_query($query);
+        
+         $books = array();
+         $books[0] = "Please select a book";
+         while($row1 = $result->fetchObject()) {
+            $books[$row1->id] = "{$row1->book} (Author: {$row1->author}, Edition: {$row1->edition})";
+            //var_dump($row1);die;
+         }
+
+                    
+           $querys = "  
+                 SELECT * FROM users_roles rol
+                 LEFT JOIN users usr ON usr.uid = rol.uid
+                 LEFT JOIN external_review_profile erp ON erp.uid = usr.uid
+                 WHERE rol.rid = 17
+                 ORDER BY erp.first_name ASC
+            ";
+         $results = db_query($querys);
+                                              
+         $reviewers = array();
+         $reviewers[0] = "Please select a reviewer";
+         while($row = $results->fetchObject()) {
+             $reviewers[$row->uid] = "{$row->first_name} {$row->last_name}";
+         }
+        $form = array();
+        $form["reviewers"] = array(
+            "#type" => "select",
+            "#title" => "",
+            "#description" => t("Please select a reviewer."),
+            "#options" => $reviewers
+        );  
+        $form["book"] = array(
+            "#type" => "select",
+            "#title" => "",
+            "#description" => t("Please select a book."),
+            "#options" => $books
+        );        
+        $form["submit"] = array(
+            "#type" => "submit",
+            "#value" => "Submit",
+        );
+        return $form;
+    }
+
+    function xcos_tbc_external_review_er_assign_book_form_validate($form, &$form_state) {
+        if(!$form_state["values"]["reviewers"]) {
+            form_set_error("reviewers", "Please select a reviewer.");
+        }
+        if(!$form_state["values"]["book"]) {
+            form_set_error("book", "Please select a book.");
+        }
+    }
+
+    function xcos_tbc_external_review_er_assign_book_form_submit($form, &$form_state){
+    
+        $v = $form_state["values"];
+           /* $query = "
+                UPDATE xcos_external_review_details
+                SET status = 1 , uid = %d
+                WHERE preference_id = %d
+            ";
+            $result = db_query($query, 
+               $v["reviewers"], $v["book"]
+            );*/ 
+            $query = db_update('xcos_external_review_details');
+            $query->fields(array(
+              'status' => 1,
+              'uid' => $v["reviewers"],
+            ));
+            $query->condition('preference_id',  $v["book"]);
+            $result = $query->execute();
+            drupal_set_message("Book alloted successfully", "status");
+            
+    }
+
+    function xcos_tbc_external_review_er_assign_book_all() {
+        $page_content .= "";
+        $page_content .= "";
+        $page_content .= "";
+        $page_content .= "";
+        $assign_book_form = drupal_get_form("xcos_tbc_external_review_er_assign_book_form");
+        $page_content .= drupal_render($assign_book_form);
+        return $page_content;
+    }
+
+    function xcos_tbc_external_review_er_remove_book_form(){
+            /*$query = "  
+                SELECT pre.id AS id, pre.book, pre.author, pre.edition, usr.uid FROM xcos_textbook_companion_preference pre
+                LEFT JOIN xcos_external_review_details erd ON erd.preference_id = pre.id
+                LEFT JOIN users usr ON usr.uid = erd.uid
+                WHERE erd.status = 1  
+                ORDER BY pre.book ASC 
+            ";
+        $result = db_query($query);*/
+        $query = db_select('xcos_textbook_companion_preference', 'pre');
+                    $query->fields('pre', array('id', 'book', 'author', 'edition'));
+                    $query->fields('usr', array('uid'));
+                    $query->leftJoin('xcos_external_review_details', 'erd', 'erd.preference_id = pre.id');
+                    $query->leftJoin('users', 'usr', 'usr.uid = erd.uid');
+                    $query->condition('erd.status', 1);
+                    $query->orderBy('pre.book', 'ASC');
+                    $result = $query->execute();
+        $books = array();
+        $books[0] = "Please select a book";    
+        while($row = $result->fetchObject()) {
+           $books[$row->id] = "{$row->book} (Author: {$row->author}, Edition: {$row->edition})";        
+        }
+
+        $form["book"] = array(
+            "#type" => "select",
+            "#title" => "",
+            "#description" => t("Please select a book."),
+            "#options" => $books
+        );        
+        $form["submit"] = array(
+            "#type" => "submit",
+            "#value" => "Submit",
+        );
+        return $form;
+    }
+
+    function xcos_tbc_external_review_er_remove_book_form_validate($form, &$form_state) {
+        if(!$form_state["values"]["book"]) {
+            form_set_error("book", "Please select a book.");
+        }
+    }
+
+    function xcos_tbc_external_review_er_remove_book_form_submit($form, &$form_state){    
+        $v = $form_state["values"];
+           /* $query = "
+                UPDATE xcos_external_review_details
+                SET status = 0 , uid = 0 
+                WHERE preference_id = %d
+            ";
+            $result = db_query($query, 
+                $v["book"]
+            ); */
+            $query = db_update('xcos_external_review_details');
+            $query->fields(array(
+              'status' => 0,
+              'uid' => 0,
+            ));
+            $query->condition('preference_id', $v["book"]);
+             $result = $query->execute();       
+            drupal_set_message("Book removed successfully", "status");
+            
+    }
+
+    function xcos_tbc_external_review_er_remove_book_all() {
+        $page_content .= "";
+        $er_remove_book_form = drupal_get_form("xcos_tbc_external_review_er_remove_book_form");
+        $page_content .= drupal_render($er_remove_book_form);
+        return $page_content;
+    }
+    
+    function _xcos_er_reminder_all($id=0, $confirm = "") {
+
+        function _er_reminder_mail($id){
+           $query = "
+                SELECT pre.id AS id, pre.book, pre.author, pre.edition, erd.failed_reminder, 
+                    erd.time, usr.uid, erp.first_name, erp.last_name, usr.mail FROM xcos_textbook_companion_preference pre
+                    LEFT JOIN xcos_external_review_details erd ON erd.preference_id = pre.id          
+                    LEFT JOIN users_roles rol ON erd.uid = rol.uid            
+                    LEFT JOIN users usr ON usr.uid = erd.uid
+                    LEFT JOIN external_review_profile erp ON erp.uid = erd.uid
+                    WHERE erd.status = 1 AND completed = 0 AND rol.rid = 18 AND id = {$id}
+                ";            
+                    $result = db_query($query);
+                    
+                    $row = $result->fetchObject();
+                    $start_date = new DateTime($row->time);
+                    $current_date = new DateTime();
+                    $since_start = $start_date->diff($current_date);
+                    $diff = ($since_start->format('%a'));                   
+                    if($diff % 15 == 0){
+
+                        $query = "
+                            UPDATE xcos_external_review_details
+                            SET failed_reminder = failed_reminder + 1
+                            WHERE preference_id = :preference_id
+                        ";
+                        
+                        
+                            /* sending mail */
+                            $to = $row->mail;
+                            $subject = "Reminder to complete review";
+                            $message = "
+                            <p>
+                              Dear Reviewer,<br><br>
+                              This is to remind you that it has been 15 days since the book was allotted to you. You still have 15 days left from the provided 30 days to submit your review comments. 
+                              Please submit your review comments in the Scilab interface. If you fail to submit the comments on time, the textbook will be removed from your account.<br>
+                              Please note that extension of deadline is not possible on any account.<br><br>
+                              Regards,<br>
+                              Scilab Team
+                            </p>
+                            ";
+                                             //drupal_mail_send($message);
+			 xcos_send_mail("textbook@scilab.in", $to, $subject, $message);
+
+                        db_query($query, array(':preference_id' => $id));
+                    } else {
+                            }
+        }
+            $query = "
+                SELECT pre.id AS id, pre.book, pre.author, pre.edition, usr.uid, erd.time, erd.failed_reminder, erp.first_name, erp.last_name, usr.mail FROM xcos_textbook_companion_preference pre
+                    LEFT JOIN xcos_external_review_details erd ON erd.preference_id = pre.id          
+                    LEFT JOIN users_roles rol ON erd.uid = rol.uid            
+                    LEFT JOIN users usr ON usr.uid = erd.uid
+                    LEFT JOIN external_review_profile erp ON erp.uid = erd.uid
+                    WHERE erd.status = 1 AND completed = 0 AND rol.rid = 18
+                    ";
+            $result = db_query($query);
+           ;           
+            $headers = array(
+             "Book", "Author", "Reviewer Name",
+             "Remainders"
+            );
+            $rows = array();  
+            while ($row = $result->fetchObject()) {
+              $item  =array(        
+                $row->book,
+                $row->author,
+                $row->first_name. " ". $row->last_name,  
+                $row->failed_reminder,
+                _er_reminder_mail($row->id),
+            );
+            }
+    }
+
+    function _er_xcos_tbc_reviewer_reminder_all($id=0, $confirm="") {
+
+        function _xcos_tbc_er_reminder_mail($id){
+
+            /*$query = "
+                SELECT DISTINCT pre.id, erc.review AS id, pre.book, pre.author, pre.edition, usr.uid, erd.time, erd.failed_reminder,
+                erd.failed_review, erc.review, erp.first_name, erp.last_name, usr.mail FROM xcos_textbook_companion_preference pre
+                LEFT JOIN xcos_external_review_details erd ON erd.preference_id = pre.id          
+                LEFT JOIN users_roles rol ON erd.uid = rol.uid            
+                LEFT JOIN users usr ON usr.uid = erd.uid
+                LEFT JOIN external_review_comments erc ON erc.uid = erd.uid
+                LEFT JOIN external_review_profile erp ON erp.uid = erd.uid
+                WHERE erd.status = 1 AND rol.rid = 18 AND erc.review = 0 AND  pre.id = {$id}
+                ";
+                $result = db_query($query);*/
+                $query = db_select('xcos_textbook_companion_preference', 'pre');
+                $query->fields('pre', array('id', 'book', 'author', 'edition'));
+                $query->fields('erc', array('review', 'review'));
+                $query->fields('usr', array('uid', 'mail'));
+                $query->fields('erd', array('time', 'failed_reminder', 'failed_review'));
+                $query->fields('erp', array('first_name', 'last_name'));
+                $query->leftJoin('xcos_external_review_details', 'erd', 'erd.preference_id = pre.id');
+                $query->leftJoin('users_roles', 'rol', 'erd.uid = rol.uid');
+                $query->leftJoin('users', 'usr', 'usr.uid = erd.uid');
+                $query->leftJoin('xcos_external_review_comments', 'erc', 'erc.uid = erd.uid');
+                $query->leftJoin('xcos_external_review_profile', 'erp', 'erp.uid = erd.uid');
+                $query->condition('erd.status', 1);
+                $query->condition('rol.rid', 9);
+                $query->condition('erc.review', 0);
+                $query->condition('pre.id',$id);
+                $result = $query->execute();
+                $row = $result->fetchObject();
+                $start_date = new DateTime($row->time);
+                $current_date = new DateTime();
+                $since_start = $start_date->diff($current_date);
+                $diff = ($since_start->format('%a'));
+                if($diff % 15 == 0){
+                  /* increment failed to review */
+                   /* $query = "
+                      UPDATE xcos_external_review_details
+                      SET failed_review = failed_review + 1
+                      WHERE preference_id = {$id}
+                    ";*/
+                    $query = db_update('xcos_external_review_details');
+                    $query->fields(array(
+                      'failed_review' => 'failed_review + 1',
+                    ));
+                    $query->condition('preference_id', $id);
+                    $query = $query->execute();
+                    /* sending mail */
+                    $to = $row->mail;
+                    $subject = "External reviewers book delay";
+                    $message= "
+                    <p>
+                      Dear TBC Reviewers,<br><br>
+                      This is to inform you that <b>{$row->first_name} {$row->last_name}</b> has failed to review the Book: <b>{$row->book}</b>, Author: <b>{$row->author}</b>, 
+                      Edition: <b>{$row->edition}</b> on time.<br><br><br>
+                      Regards,<br>
+                      Scilab Team
+                    </p>
+                    ";
+                                       //drupal_mail_send($message);
+                   xcos_send_mail("textbook@scilab.in", $to, $subject, $message);
+  
+                    db_query($query);
+                } else{
+                    }
+        }
+            /*$query = "
+                SELECT DISTINCT pre.id AS id, pre.book, pre.author, pre.edition, usr.uid, erd.failed_reminder,
+                        erd.failed_review, erp.first_name, erp.last_name, usr.mail FROM xcos_textbook_companion_preference pre
+                        LEFT JOIN xcos_external_review_details erd ON erd.preference_id = pre.id          
+                        LEFT JOIN users_roles rol ON erd.uid = rol.uid            
+                        LEFT JOIN users usr ON usr.uid = erd.uid
+                        LEFT JOIN external_review_comments erc ON erc.uid = erd.uid
+                        LEFT JOIN external_review_profile erp ON erp.uid = erd.uid
+                        WHERE erd.status = 1 AND rol.rid = 18 AND erc.review = 0
+                        ";
+                $result = db_query($query);*/
+                $query = db_select('xcos_textbook_companion_preference', 'pre');
+                $query->fields('pre', array('id', 'book', 'author', 'edition'));
+                $query->fields('usr', array('uid', 'mail'));
+                $query->fields('erd', array('failed_reminder', 'failed_review'));
+                $query->fields('erp', array('first_name', 'last_name'));
+                $query->leftJoin('xcos_external_review_details', 'erd', 'erd.preference_id = pre.id');
+                $query->leftJoin('users_roles', 'rol', 'erd.uid = rol.uid');
+                $query->leftJoin('users', 'usr', 'usr.uid = erd.uid');
+                $query->leftJoin('xcos_external_review_comments', 'erc', 'erc.uid = erd.uid');
+                $query->leftJoin('xcos_external_review_profile', 'erp', 'erp.uid = erd.uid');
+                $query->condition('erd.status', 1);
+                $query->condition('rol.rid', 9);
+                $query->condition('erc.review', 0);
+                $result = $query->execute();                
+                $headers = array(
+                 "Book", "Author", "Reviewer Name", "Remainders"
+                );
+                $rows = array();  
+                while ($row = $result->fetchObject()) {
+                $item  = array(        
+                    $row->book,
+                    $row->author,
+                    $row->first_name ." ". $row->last_name,
+                    $row->failed_review,
+                    _xcos_tbc_er_reminder_mail($row->id),
+                );
+                }
+    }
+    function _xcos_er_reminder_page_all($id=0) {
+
+        $page_content = "";
+                /*$query = "
+                    SELECT pre.id AS id, pre.book, pre.author, pre.edition, usr.uid, erd.time, erd.failed_reminder, erp.first_name,
+                        erp.last_name, usr.mail FROM xcos_textbook_companion_preference pre
+                        LEFT JOIN xcos_external_review_details erd ON erd.preference_id = pre.id
+                        LEFT JOIN users_roles rol ON erd.uid = rol.uid
+                        LEFT JOIN users usr ON usr.uid = erd.uid
+                        LEFT JOIN external_review_profile erp ON erp.uid = erd.uid
+                        WHERE erd.status = 1 AND completed = 0 AND rol.rid = 18
+                        ";
+               
+                $result = db_query($query);*/
+                $query = db_select('xcos_textbook_companion_preference', 'pre');
+                $query->fields('pre', array('id', 'book', 'author', 'edition'));
+                $query->fields('usr', array('uid', 'mail'));
+                $query->fields('erd', array('time', 'failed_reminder'));
+                $query->fields('erp', array('first_name', 'last_name'));
+                $query->leftJoin('xcos_external_review_details', 'erd', 'erd.preference_id = pre.id');
+                $query->leftJoin('users_roles', 'rol', 'erd.uid = rol.uid');
+                $query->leftJoin('users', 'usr', 'usr.uid = erd.uid');
+                $query->leftJoin('xcos_external_review_profile', 'erp', 'erp.uid = erd.uid');
+                $query->condition('erd.status', 1);
+                $query->condition('completed', 0);
+                $query->condition('rol.rid', 9);
+                $result = $query->execute();
+                
+                $headers = array(
+                "Book", "Author", "Reviewer Name",
+                "Remainders"
+                );
+                $rows = array();  
+            while ($row = $result->fetchObject()) {
+                $item  =array(        
+                    $row->book,
+                    $row->author,
+                    $row->first_name. " ". $row->last_name,
+                    $row->failed_reminder 
+                );
+            array_push($rows, $item);
+            }
+        //$page_content .= theme("table", $headers, $rows);
+        $page_content .= theme('table', array('header' => $headers, 'rows' => $rows ));
+        return $page_content;
+    }
+    
+
+    function _xcos_tbc_reviewer_reminder_page_all($id=0, $confirm="") {
+
+        $page_content = "";
+                /*$query = "
+                    SELECT DISTINCT pre.id AS id, pre.book, pre.author, pre.edition, usr.uid, erd.failed_reminder,
+                        erd.failed_review, erp.first_name, erp.last_name, usr.mail FROM xcos_textbook_companion_preference pre
+                        LEFT JOIN xcos_external_review_details erd ON erd.preference_id = pre.id
+                        LEFT JOIN users_roles rol ON erd.uid = rol.uid
+                        LEFT JOIN users usr ON usr.uid = erd.uid
+                        LEFT JOIN external_review_comments erc ON erc.uid = erd.uid
+                        LEFT JOIN external_review_profile erp ON erp.uid = erd.uid
+                        WHERE erd.status = 1 AND rol.rid = 18 AND erc.review = 0
+                        ";
+                $result = db_query($query); */
+                $query = db_select('xcos_textbook_companion_preference', 'pre');
+                $query->fields('pre', array('id', 'book', 'author', 'edition'));
+                $query->fields('usr', array('uid', 'mail'));
+                $query->fields('erd', array('failed_reminder', 'failed_review'));
+                $query->fields('erp', array('first_name', 'last_name'));
+                $query->leftJoin('xcos_external_review_details', 'erd', 'erd.preference_id = pre.id');
+                $query->leftJoin('users_roles', 'rol', 'erd.uid = rol.uid');
+                $query->leftJoin('users', 'usr', 'usr.uid = erd.uid');
+                $query->leftJoin('xcos_external_review_comments', 'erc', 'erc.uid = erd.uid');
+                $query->leftJoin('xcos_external_review_profile', 'erp', 'erp.uid = erd.uid');
+                $query->condition('erd.status', 1);
+                $query->condition('rol.rid', 9);
+                $query->condition('erc.review', 0);
+                $result = $query->execute();
+                $headers = array(
+                 "Book", "Author", "Reviewer Name", "Remainders"
+                );
+                $rows = array();  
+            while ($row = $result->fetchObject()) {
+                $item  = array(
+                    $row->book,
+                    $row->author,
+                    $row->first_name ." ". $row->last_name,
+                    $row->failed_review,
+                );
+            array_push($rows, $item);
+            }
+        //$page_content .= theme("table", $headers, $rows);
+        $page_content .= theme('table', array('header' => $headers, 'rows' => $rows ));
+      
+        return $page_content;
+    }
+    
+    /*Used to replace drupal_mail*/
+    function xcos_send_mail($from, $to, $subject, $message) {
+        $my_module = 'xcos_tbc_external_review';
+        $my_mail_token = microtime();
+        $message = array(
+            'id' => $my_module . '_' . $my_mail_token,
+            'to' => $to,
+            'subject' => $subject,
+            'body' => array($message),
+            'headers' => array(
+                'From' => $from, 
+                'Sender' => $from, 
+                'Return-Path' => $from,
+                'Bcc' =>variable_get('xcos_tbc_external_review_bcc_emails', NULL),
+            ),
+        );
+        $system = drupal_mail_system($my_module, $my_mail_token);
+        $message = $system->format($message);
+        if ($system->mail($message)) {
+            return TRUE;
+        }
+        else {
+            return FALSE;
+        }
+    }
+    function xcos_tbc_external_review_init() {
+        drupal_add_css(drupal_get_path("module", "xcos_tbc_external_review") . "/css/xcos_tbc_external_review.css");
+        drupal_add_css(drupal_get_path("module", "xcos_tbc_external_review") . "/css/pop.css");
+        drupal_add_js(drupal_get_path("module", "xcos_tbc_external_review") . "/js/jquery-1.9.1.js");        
+        drupal_add_js(drupal_get_path("module", "xcos_tbc_external_review") . "/js/jquery-noconfilct.js");
+       // drupal_add_js(drupal_get_path("module", "xcos_tbc_external_review") . "/js/jquery.lightbox_me.js");
+        drupal_add_js(drupal_get_path("module", "xcos_tbc_external_review") . "/js/xcos_external_review.js");
+        drupal_add_js(drupal_get_path("module", "xcos_tbc_external_review") . "/js/xcos_timer.js");
+    }
+ function _ajax_xcos_tbc_review_get_chapter_list($preference_id = 0)
+{
+ 
+  $book_chapters = array('0' => 'Please select...');
+
+  /*$book_chapters_q = db_query("SELECT * FROM {xcos_textbook_companion_chapter} WHERE preference_id = %d ORDER BY number ASC", $preference_id);*/
+	$query = db_select('xcos_textbook_companion_chapter');
+	$query->fields('xcos_textbook_companion_chapter');
+	$query->condition('preference_id', $preference_id);
+	$query->orderBy('number', 'ASC');
+	$book_chapters_q = $query->execute();
+
+  while ($book_chapters_data = $book_chapters_q->fetchObject())
+  {
+    $book_chapters[$book_chapters_data->id] = $book_chapters_data->number . '. ' . $book_chapters_data->name;
+  }
+  
+  return $book_chapters;
+ }
+function _ajax_xcos_tbc_review_get_example_list($chapter_id = 0)
+    {
+  $book_examples = array('0' => 'Please select...');
+
+  /*$book_examples_q = db_query("SELECT * FROM {xcos_textbook_companion_example} WHERE chapter_id = %d ORDER BY
+    CAST(SUBSTRING_INDEX(number, '.', 1) AS BINARY) ASC,
+    CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(number , '.', 2), '.', -1) AS UNSIGNED) ASC,
+    CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(number , '.', -1), '.', 1) AS UNSIGNED) ASC", $chapter_id);*/
+
+		$query = db_select('xcos_textbook_companion_example');
+		$query->fields('xcos_textbook_companion_example');
+		$query->condition('chapter_id',  $chapter_id);
+		//$query->orderBy('CAST', 'ASC');
+		//$query->orderBy('CAST', 'ASC');
+		//$query->orderBy('CAST', 'ASC');
+		$book_examples_q = $query->execute();
+
+
+  while ($book_examples_data = $book_examples_q->fetchObject())
+  {
+    $book_examples[$book_examples_data->id] = $book_examples_data->number . ' (' . $book_examples_data->caption . ')';
+  }
+  return $book_examples;
+}
