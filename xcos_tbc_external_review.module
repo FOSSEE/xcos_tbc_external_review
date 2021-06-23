@@ -2154,9 +2154,9 @@ ini_set('display_startup_errors', TRUE);
                 $item = array(
                     $row->chapter, $row->example,
                     _bool($row->ois), _bool($row->ncf), _bool($row->axl), _bool($row->acn), 
-                    _bool($row->sua), _bool($row->dmx),
-                    _bool($row->dwe), _bool($row->auu),
-                    _bool($row->amt), "{$row->comment}"
+                    _bool($row->sua), _bool($row->auu),
+                    _bool($row->amt), _bool($row->dmx),_bool($row->dwe),
+                    "{$row->comment}"
                 );
                 fputcsv($fp, $item);
             }
